@@ -5,6 +5,8 @@ function RESET() {
     CTX.restore();
     //save initial state for later restore
     CTX.save();
+    //delete everything
+    CTX.clearRect(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
     //move to center of canvas
     CTX.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
 }
@@ -22,7 +24,7 @@ function INIT(canvas) {
 
     //set default line style
     CTX.strokeStyle = "#000000";
-
+    CTX.save();
     RESET();
 }
 
@@ -48,14 +50,8 @@ function LEFT(angle) {
 }
 
 function REPEAT(times, fn, args) {
-    var i = 0;
-    setTimeout(function () {
-        if (i < times) {
-            i++;
-            fn.apply(this, args || []);
-            arguments.callee();
-        }
-    },
-    0);
+    for (var i = 0; i < times; i++) {
+        fn.apply(this, args || []);
+    }
 }
 
