@@ -52,7 +52,7 @@ function REPEAT(times, fn, args) {
     setTimeout(function () {
         if (i < times) {
             i++;
-            fn.apply(this, args);
+            fn.apply(this, args || []);
             arguments.callee();
         }
     },

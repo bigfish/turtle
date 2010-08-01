@@ -1,8 +1,18 @@
 
-function SQUARE(len) {
-    for(var i = 0; i < 4; i++) {
-        RIGHT(90);
-        FORWARD(len);
-    }
+function SQUAREPIECE(size) {
+    FORWARD(size);
+    RIGHT(90);
 }
+
+function SQUARE(size) {
+    REPEAT(4, SQUAREPIECE, [size]);
+}
+
+function RECTANGLE(side1, side2) {
+    REPEAT(2, function () {
+        SQUAREPIECE(side1);
+        SQUAREPIECE(side2);
+    });
+}
+
 
