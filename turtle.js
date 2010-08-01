@@ -1,5 +1,14 @@
 var CTX, CANVAS_WIDTH, CANVAS_HEIGHT;
 
+function RESET() {
+    //clear state
+    CTX.restore();
+    //save initial state for later restore
+    CTX.save();
+    //move to center of canvas
+    CTX.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+}
+
 function INIT(canvas) {
 
     if (canvas.getContext) {
@@ -13,44 +22,40 @@ function INIT(canvas) {
 
     //set default line style
     CTX.strokeStyle = "#000000";
-}
 
-function START() {
-    //clear state
-    CTX.restore();
-    //save initial state for later restore
-    CTX.save();
-    //clear path points
-    CTX.beginPath();
-    //move to center of canvas
-    CTX.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
-    //add first point of path at center
-    CTX.moveTo(0, 0);
-}
-
-function END() {
-    //render path which was created
-    CTX.stroke();
+    RESET();
 }
 
 function FORWARD(len) {
-    //forwards = up 
-    CTX.lineTo(0, -len);
-    //CTX.stroke();
-    CTX.translate(0, -len);
+    CTX.beginPath();
+    CTX.moveTo(0, 0);
+    //forwards = up : reverse the Y coordinate
+    CTX.lineTo(0, - len);
+    CTX.translate(0, - len);
+    CTX.stroke();
 }
 
 function BACK(len) {
-    //forwards = up 
-    CTX.lineTo(0, len);
-    //CTX.stroke();
-    CTX.translate(0, len);
+    FORWARD( - len);
 }
 
 function RIGHT(angle) {
     CTX.rotate(angle * Math.PI / 180);
 }
+
 function LEFT(angle) {
-    CTX.rotate( - angle * Math.PI / 180);
+    RIGHT( - angle);
+}
+
+function REPEAT(times, fn, args) {
+    var i = 0;
+    setTimeout(function () {
+        if (i < times) {
+            i++;
+            fn.apply(this, args);
+            arguments.callee();
+        }
+    },
+    0);
 }
 
