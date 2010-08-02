@@ -1,4 +1,3 @@
-
 function SQUAREPIECE(size) {
     FORWARD(size);
     RIGHT(90);
@@ -81,6 +80,59 @@ function FLOWER(size) {
     });
 }
 
+function RAY(r) {
+    REPEAT(2, function () {
+        ARCL(r, 90);
+        ARCR(r, 90);
+    });
+}
 
+function SUN(size) {
+    REPEAT(9, function () {
+        RAY(size);
+        RIGHT(160);
+    });
+}
 
+function POLY(side, angle) {
+    REPEAT(360, function () {
+        FORWARD(side);
+        RIGHT(angle);
+    });
+}
+
+function NEWPOLY(side, angle) {
+    REPEAT(100, function () {
+        FORWARD(side);
+        RIGHT(angle);
+        FORWARD(side);
+        RIGHT(2 * angle);
+    });
+}
+
+function POLYSPI(side, angle, inc) {
+    if (inc === undefined) {
+        inc = 1;
+    }
+    FORWARD(side);
+    RIGHT(angle);
+    if (side < 500) {
+        POLYSPI(side + inc, angle, inc);
+    }
+}
+
+function MULTISPI(side, angle, factor, iter) {
+    if (iter === undefined) {
+        iter = 1;
+    } else {
+        iter += 1;
+    }
+
+    FORWARD(side);
+    RIGHT(angle);
+
+    if (iter < 500) {
+        MULTISPI(side * factor, angle, factor, iter);
+    }
+}
 
