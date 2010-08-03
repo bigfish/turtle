@@ -135,4 +135,27 @@ function MULTISPI(side, angle, factor, iter) {
         MULTISPI(side * factor, angle, factor, iter);
     }
 }
+function INSPI(side, angle, inc, iter) {
+    iter = (iter === undefined) ? 1: iter;
+    FORWARD(side);
+    RIGHT(angle);
+    if (iter < 500) {
+        INSPI(side, angle + inc, inc, iter);
+    }
+}
+
+function SUBSPIRO(side, angle, max) {
+    var count = 1;
+    while (count <= max) {
+        FORWARD(side * count);
+        RIGHT(angle);
+        count++;
+    }
+
+}
+function SPIRO(side, angle, max) {
+    REPEAT(100, function () {
+        SUBSPIRO(side, angle, max, 0);
+    });
+}
 
