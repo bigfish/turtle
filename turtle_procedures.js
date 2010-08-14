@@ -4,116 +4,139 @@
 
 var TEACH_TURTLE_PROCEDURES = function (t) {
         
+    //wrap core turtle methods in functions
+    //to avoid calling as methods
+
+    function FORWARD(len) {
+        t.forward(len);
+    }
+
+    function RIGHT(angle) {
+        t.right(angle);
+    }
+
+    function LEFT(angle) {
+        t.left(angle);
+    }
+
+    function BACK(len) {
+        t.back(len);
+    }
+
+    function REPEAT(times, fn, args) {
+        t.repeat(times, fn, args);
+    }
+
     function SQUAREPIECE (size) {
-        t.forward(size);
-        t.right(90);
+        FORWARD(size);
+        RIGHT(90);
     }
 
     function SQUARE (size) {
-        t.repeat(4, SQUAREPIECE, [size]);
+        REPEAT(4, SQUAREPIECE, [size]);
     }
 
     function RECTANGLE(side1, side2) {
-        t.repeat(2, function () {
+        REPEAT(2, function () {
             SQUAREPIECE(side1);
             SQUAREPIECE(side2);
         });
     }
 
     function TRIANGLE(size) {
-        t.repeat(3, function () {
-            t.forward(size);
-            t.right(120);
+        REPEAT(3, function () {
+            FORWARD(size);
+            RIGHT(120);
         });
     }
 
     function HOUSE(size) {
         SQUARE(size);
-        t.forward(size);
-        t.right(30);
+        FORWARD(size);
+        RIGHT(30);
         TRIANGLE(size);
     }
 
     function THING() {
-        t.forward(100);
-        t.right(90);
-        t.forward(100);
-        t.right(90);
-        t.forward(50);
-        t.right(90);
-        t.forward(50);
-        t.right(90);
-        t.forward(100);
-        t.right(90);
-        t.forward(25);
-        t.right(90);
-        t.forward(25);
-        t.right(90);
-        t.forward(50);
+        FORWARD(100);
+        RIGHT(90);
+        FORWARD(100);
+        RIGHT(90);
+        FORWARD(50);
+        RIGHT(90);
+        FORWARD(50);
+        RIGHT(90);
+        FORWARD(100);
+        RIGHT(90);
+        FORWARD(25);
+        RIGHT(90);
+        FORWARD(25);
+        RIGHT(90);
+        FORWARD(50);
     }
 
     function CIRCLE(size) {
-        t.repeat(360, function () {
-            t.forward(size);
-            t.right(1);
+        REPEAT(360, function () {
+            FORWARD(size);
+            RIGHT(1);
         });
     }
 
     function ARCR(r, deg) {
-        t.repeat(deg, function () {
-            t.forward(r);
-            t.right(1);
+        REPEAT(deg, function () {
+            FORWARD(r);
+            RIGHT(1);
         });
     }
 
     function ARCL(r, deg) {
-        t.repeat(deg, function () {
-            t.forward(r);
-            t.left(1);
+        REPEAT(deg, function () {
+            FORWARD(r);
+            LEFT(1);
         });
     }
 
     function PETAL(size) {
         ARCR(size, 60);
-        t.right(120);
+        RIGHT(120);
         ARCR(size, 60);
-        t.right(120);
+        RIGHT(120);
     }
 
     function FLOWER(size) {
-        t.repeat(6, function () {
+        REPEAT(6, function () {
             PETAL(size);
-            t.right(60);
+            RIGHT(60);
         });
     }
 
     function RAY(r) {
-        t.repeat(2, function () {
+        REPEAT(2, function () {
             ARCL(r, 90);
             ARCR(r, 90);
         });
     }
 
     function SUN(size) {
-        t.repeat(9, function () {
+        REPEAT(9, function () {
             RAY(size);
-            t.right(160);
+            RIGHT(160);
         });
     }
 
     function POLY(side, angle) {
-        t.repeat(360, function () {
-            t.forward(side);
-            t.right(angle);
+        REPEAT(360, function () {
+            FORWARD(side);
+            RIGHT(angle);
         });
     }
 
     function NEWPOLY(side, angle) {
-        t.repeat(100, function () {
-            t.forward(side);
-            t.right(angle);
-            t.forward(side);
-            t.right(2 * angle);
+        REPEAT(100, function () {
+            FORWARD(side);
+            RIGHT(angle);
+            FORWARD(side);
+            RIGHT(2 * angle);
         });
     }
 
@@ -121,8 +144,8 @@ var TEACH_TURTLE_PROCEDURES = function (t) {
         if (inc === undefined) {
             inc = 1;
         }
-        t.forward(side);
-        t.right(angle);
+        FORWARD(side);
+        RIGHT(angle);
         if (side < 500) {
             POLYSPI(side + inc, angle, inc);
         }
@@ -135,8 +158,8 @@ var TEACH_TURTLE_PROCEDURES = function (t) {
             iter += 1;
         }
 
-        t.forward(side);
-        t.right(angle);
+        FORWARD(side);
+        RIGHT(angle);
 
         if (iter < 500) {
             MULTISPI(side * factor, angle, factor, iter);
@@ -145,8 +168,8 @@ var TEACH_TURTLE_PROCEDURES = function (t) {
 
     function INSPI(side, angle, inc, iter) {
         iter = (iter === undefined) ? 1: iter;
-        t.forward(side);
-        t.right(angle);
+        FORWARD(side);
+        RIGHT(angle);
         if (iter < 500) {
             INSPI(side, angle + inc, inc, iter);
         }
@@ -155,32 +178,32 @@ var TEACH_TURTLE_PROCEDURES = function (t) {
     function SUBSPIRO(side, angle, max) {
         var count = 1;
         while (count <= max) {
-            t.forward(side * count);
-            t.right(angle);
+            FORWARD(side * count);
+            RIGHT(angle);
             count++;
         }
 
     }
 
     function SPIRO(side, angle, max) {
-        t.repeat(100, SUBSPIRO, [side, angle, max, 0]);
+        REPEAT(100, SUBSPIRO, [side, angle, max, 0]);
     }
 
     function SUBGSPIRO(side, angle, max, list) {
         var count = 1;
         while (count <= max) {
-            t.forward(side * count);
+            FORWARD(side * count);
             if (list.indexOf(count) > - 1) {
-                t.left(angle);
+                LEFT(angle);
             } else {
-                t.right(angle);
+                RIGHT(angle);
             }
             count++;
         }
     }
 
     function GSPIRO(side, angle, max, list) {
-        t.repeat(100, SUBGSPIRO, [side, angle, max, list]);
+        REPEAT(100, SUBGSPIRO, [side, angle, max, list]);
     }
 
     //public methods
