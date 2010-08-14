@@ -76,7 +76,7 @@ function Turtle(canvas) {
             fn.apply(this, args || []);
         }
     }
-    
+
     this.reset = reset;
     this.forward = forward;
     this.back = back;
@@ -85,6 +85,8 @@ function Turtle(canvas) {
     this.repeat = repeat;
 
     init(canvas);
+
+    
 }
 
 
