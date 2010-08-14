@@ -1,5 +1,5 @@
 
-function Turtle(canvas) {
+function Turtle(canvas, procedures) {
 
     //private vars
     var ctx;
@@ -8,6 +8,7 @@ function Turtle(canvas) {
     var RAD2DEG = 180 / PI;
     var canvasWidth;
     var canvasHeight;
+    var that = this;
 
     //private functions
     function init(canvas) {
@@ -37,6 +38,13 @@ function Turtle(canvas) {
         ctx.strokeStyle = "#000000";
         ctx.save();
         reset();
+        //apply additional procedures to turtle
+        if (procedures) {
+            for (var p = 0; p < procedures.length; p++) {
+                procedures[p](that);
+            }   
+        }
+        return that;
     }
 
     function reset() {

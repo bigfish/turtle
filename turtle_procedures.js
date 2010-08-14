@@ -2,7 +2,7 @@
 //exposes the global function TEACH_TURTLE_PROCEDURES
 //to add procedures to the turtle object given as parameter
 
-var TEACH_TURTLE_PROCEDURES = function (t) {
+var TURTLE_PROCEDURES = function (t) {
         
     //wrap core turtle methods in functions
     //to avoid calling as methods
@@ -26,7 +26,8 @@ var TEACH_TURTLE_PROCEDURES = function (t) {
     function REPEAT(times, fn, args) {
         t.repeat(times, fn, args);
     }
-
+    //end wrapper functions
+   
     function SQUAREPIECE (size) {
         FORWARD(size);
         RIGHT(90);
