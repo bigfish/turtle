@@ -153,9 +153,25 @@ function SUBSPIRO(side, angle, max) {
     }
 
 }
+
 function SPIRO(side, angle, max) {
-    REPEAT(100, function () {
-        SUBSPIRO(side, angle, max, 0);
-    });
+    REPEAT(100, SUBSPIRO, [side, angle, max, 0]);
 }
+
+function SUBGSPIRO(side, angle, max, list) {
+    var count = 1;
+    while (count <= max) {
+        FORWARD(side * count);
+        if (list.indexOf(count) > - 1) {
+            LEFT(angle);
+        } else {
+            RIGHT(angle);
+        }
+        count++;
+    }
+}
+function GSPIRO(side, angle, max, list) {
+    REPEAT(100, SUBGSPIRO, [side, angle, max, list]);
+}
+ 
 
