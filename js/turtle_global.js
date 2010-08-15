@@ -1,3 +1,8 @@
+//Turtle graphics in global scope
+//(uses global functions for easier interactive use)
+//but only suports a single Turtle context
+//for OOP style use turtle.js & turtle_procedures.js
+
 var CTX, CANVAS_WIDTH, CANVAS_HEIGHT;
 
 function RESET() {
@@ -12,7 +17,10 @@ function RESET() {
 }
 
 function INIT(canvas) {
-
+    
+    if (typeof canvas === "string") {
+        canvas = document.getElementById(canvas);
+    }
     if (canvas.getContext) {
         CTX = canvas.getContext("2d");
     } else {
