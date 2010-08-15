@@ -1,0 +1,23 @@
+<html>
+	<head>
+	<style>
+      body, pre {
+        font-family: Verdana, Arial, Helvetica;
+        font-size: .85em;
+		background: #000000;
+		color: #00FF00;
+      }
+	  </style>
+	</head>
+	<body>
+	<pre>
+function NEWPOLY(side, angle) {
+    REPEAT(100, function () {
+        FORWARD(side);
+        RIGHT(angle);
+        FORWARD(side);
+        RIGHT(2 * angle);
+    });
+}
+
+</pre></body></html>

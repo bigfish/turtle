@@ -1,0 +1,116 @@
+<html>
+  <head>
+    <title>Turtle Graphics Explorer</title>
+    <style>
+      body {
+        font-family: Verdana, Helvetica, Arial;
+        padding:0;
+        margin:0;
+        background-color: #000000;
+        color:#00FF00;
+      }
+      #instructions {
+        padding-left:.5em;
+        font-size: 0.8em;
+      }
+      #feedback {
+        color:red;
+        margin: 0;
+        padding: 0;
+        font-size: 0.6em;
+      } 
+      #showhidelink {
+        color:blue;
+        text-decoration:none;
+        font-size: 0.8em;
+        padding-left: 3em;
+      }
+      #title {
+        padding-left: 180px;
+      }
+      #turtle_buffer {
+        display:box;
+        background-color: #000000;
+        border: 1px solid #00FF00;
+        color: #00FF00;
+        width:98%;
+        height: 99%;
+        margin:0;
+        padding:1%;
+      }
+    </style>
+    <script src="js/turtle_global.js" ></script>
+    <script src="js/global_procedures.js" ></script>
+  </head>
+  <body bgcolor="white">
+    <table style="margin:0;padding:0" width="100%" height="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="600">
+          <span id="title">Turtle Graphics Explorer</span>
+          <script>
+            if (top.location.href.indexOf("index.html") > -1) {
+              document.write('<a id="showhidelink" href="explorer.html" target="_top">hide procedures</a>');
+              document.write('<canvas id="canvas" width="600" height="600">');
+            } else {
+              document.write('<a id="showhidelink" href="index.html" target="_top">show procedures</a>');
+              document.write('<canvas id="canvas" width="800" height="600">');
+          }
+          </script>
+          Your browser does not support canvas, please upgrade. 
+          </canvas>
+        </td>
+        <td valign="top">
+          <form style="width: 100%; height: 90%; padding-top: 8px">
+            <label id="instructions">Write or load example: </label>
+            <select id="select_snippet" onchange="load_snippet()">
+            </select> 
+            <textarea id="turtle_buffer">SQUARE(100);</textarea>
+            <br>
+            <input type="button" value="RUN" onclick="RUN()"/>
+            <input type="button" value="CLEAR SCREEN" onclick="RESET()"/>
+            <p id="feedback" ></p>
+          </form>
+        </td>
+      </tr>
+    </table>
+<script>
+//TurtleExplorer
+$ = function(id) { return document.getElementById(id); };
+var feedback = $("feedback");
+var buffer = $('turtle_buffer');
+var snippetsURL = "snippets";
+//run the buffer of code entered by the user
+function RUN() {
+  var buftext = buffer.value;
+	feedback.innerText = "";
+	try {
+		eval(buftext);
+	} catch(e) {
+		feedback.innerText = e.message;
+	}
+}
+
+INIT("canvas", "#000000", "#FFFF00");
+
+function load_snippet(index) {
+  var snippet = $("select_snippet").value;
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+  console.log(this.readyState);
+    if(this.readyState == 4 && this.status == 200) {
+      if(this.responseText) {
+        buffer.value = this.responseText;
+      }
+    } else if (this.readyState == 4 && this.status != 200) {
+      feedback.innerText = "There was a probelem loading snippet '"+snippet+"'";
+    }
+
+  }
+  xhr.open("GET", snippetsURL + "/" + snippet + ".js");
+  xhr.send();
+}
+
+</script>
+
+  </body>
+</html>

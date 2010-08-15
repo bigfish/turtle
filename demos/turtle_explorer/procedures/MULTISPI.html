@@ -1,0 +1,29 @@
+<html>
+	<head>
+	<style>
+      body, pre {
+        font-family: Verdana, Arial, Helvetica;
+        font-size: .85em;
+		background: #000000;
+		color: #00FF00;
+      }
+	  </style>
+	</head>
+	<body>
+	<pre>
+function MULTISPI(side, angle, factor, iter) {
+    if (iter === undefined) {
+        iter = 1;
+    } else {
+        iter += 1;
+    }
+
+    FORWARD(side);
+    RIGHT(angle);
+
+    if (iter < 500) {
+        MULTISPI(side * factor, angle, factor, iter);
+    }
+}
+
+</pre></body></html>

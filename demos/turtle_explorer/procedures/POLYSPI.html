@@ -1,0 +1,25 @@
+<html>
+	<head>
+	<style>
+      body, pre {
+        font-family: Verdana, Arial, Helvetica;
+        font-size: .85em;
+		background: #000000;
+		color: #00FF00;
+      }
+	  </style>
+	</head>
+	<body>
+	<pre>
+function POLYSPI(side, angle, inc) {
+    if (inc === undefined) {
+        inc = 1;
+    }
+    FORWARD(side);
+    RIGHT(angle);
+    if (side < 500) {
+        POLYSPI(side + inc, angle, inc);
+    }
+}
+
+</pre></body></html>

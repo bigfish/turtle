@@ -1,0 +1,23 @@
+<html>
+	<head>
+	<style>
+      body, pre {
+        font-family: Verdana, Arial, Helvetica;
+        font-size: .85em;
+		background: #000000;
+		color: #00FF00;
+      }
+	  </style>
+	</head>
+	<body>
+	<pre>
+function INSPI(side, angle, inc, iter) {
+    iter = (iter === undefined) ? 1: iter;
+    FORWARD(side);
+    RIGHT(angle);
+    if (iter < 500) {
+        INSPI(side, angle + inc, inc, iter);
+    }
+}
+
+</pre></body></html>
