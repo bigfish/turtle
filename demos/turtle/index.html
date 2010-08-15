@@ -5,10 +5,12 @@
     <canvas id="canvas" width="800" height="600">
      Yout browser does not support canvas, please upgrade. 
     </canvas>
-    <script src="turtle.js" ></script>
-    <script src="turtle_procedures.js" ></script>
+    <script src="js/turtle.js" ></script>
+    <script src="js/turtle_procedures.js" ></script>
     <script>
+      //create a turtle, adding procedures
       turtle = new Turtle("canvas", [TURTLE_PROCEDURES]);
+      //demonstrate use of procedure by turtle
       turtle.SQUARE(100);
     </script>
 
