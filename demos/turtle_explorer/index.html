@@ -3,7 +3,13 @@
     <title>Turtle Graphics Explorer</title>
     <style>
       body {
-        font: 0.8em Verdana, Helvetica, Arial;
+        font-family: Verdana, Helvetica, Arial;
+        padding:0;
+        margin:0;
+      }
+      #instructions {
+        padding-left:.5em;
+        font-size: 0.8em;
       }
       #feedback {
         color:red;
@@ -16,7 +22,7 @@
     <script src="js/global_procedures.js" ></script>
   </head>
   <body bgcolor="white">
-    <table width="100%" height="100%">
+    <table style="margin:0;padding:0" width="100%" height="100%" cellpadding="0" cellspacing="0">
       <tr>
         <td>
           <canvas id="canvas" width="800" height="600">
@@ -25,6 +31,11 @@
         </td>
         <td>
           <form>
+            <label id="instructions">Write JavaScript code or load: </label>
+            <select id="select_snippet" onchange="load_snippet()">
+              <option name="SQUARE" value="SQUARE">SQUARE</option>
+              <option name="CIRCLE" value="CIRCLE">CIRCLE</option>
+            </select> 
             <textarea id="turtle_buffer" rows="40" cols="40">
 SQUARE(100);
             </textarea>
@@ -40,9 +51,10 @@ SQUARE(100);
 //TurtleExplorer
 $ = function(id) { return document.getElementById(id); };
 var feedback = $("feedback");
+var buffer = $('turtle_buffer');
 //run the buffer of code entered by the user
 function RUN() {
-  var buftext = $('turtle_buffer').value;
+  var buftext = buffer.value;
 	feedback.innerText = "";
 	try {
 		eval(buftext);
@@ -53,6 +65,20 @@ function RUN() {
 
 INIT("canvas", "#000000", "#FFEE00");
 
+function load_snippet(index) {
+  var snippet = $("select_snippet").value;
+  switch(snippet) {
+  
+    case "SQUARE":
+      buffer.value = " REPEAT(4, SQUAREPIECE, [size]);";
+      break;
+
+    case "CIRCLE":
+      buffer.value = " circle code ";
+      break;
+
+  }
+}
 </script>
 
   </body>
