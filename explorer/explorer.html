@@ -62,7 +62,9 @@
         <td valign="top">
           <form style="width: 100%; height: 90%; padding-top: 8px">
             <label id="instructions">Write or load example: </label>
-            <select id="select_snippet" onchange="load_snippet()">
+            <select id="select_example" onchange="load_example()">
+              <option value="circle">circle</option>
+              <option value="circles">circles</option>
             </select> 
             <textarea id="turtle_buffer">SQUARE(100);</textarea>
             <br>
@@ -78,7 +80,7 @@
 $ = function(id) { return document.getElementById(id); };
 var feedback = $("feedback");
 var buffer = $('turtle_buffer');
-var snippetsURL = "snippets";
+var examplesURL = "examples";
 //run the buffer of code entered by the user
 function RUN() {
   var buftext = buffer.value;
@@ -92,8 +94,8 @@ function RUN() {
 
 INIT("canvas", "#000000", "#FFFF00");
 
-function load_snippet(index) {
-  var snippet = $("select_snippet").value;
+function load_example(index) {
+  var example = $("select_example").value;
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
   console.log(this.readyState);
@@ -102,11 +104,11 @@ function load_snippet(index) {
         buffer.value = this.responseText;
       }
     } else if (this.readyState == 4 && this.status != 200) {
-      feedback.innerText = "There was a probelem loading snippet '"+snippet+"'";
+      feedback.innerText = "There was a probelem loading example '"+example+"'";
     }
 
   }
-  xhr.open("GET", snippetsURL + "/" + snippet + ".js");
+  xhr.open("GET", examplesURL + "/" + example + ".js");
   xhr.send();
 }
 
