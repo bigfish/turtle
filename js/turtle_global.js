@@ -3,7 +3,7 @@
 //but only suports a single Turtle context
 //for OOP style use turtle.js & turtle_procedures.js
 
-var CTX, CANVAS_WIDTH, CANVAS_HEIGHT;
+var CTX, CANVAS_WIDTH, CANVAS_HEIGHT, BG, FG;
 
 function RESET() {
     //clear state
@@ -12,11 +12,14 @@ function RESET() {
     CTX.save();
     //delete everything
     CTX.clearRect(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
+    //fill with background color
+    CTX.fillRect(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
+ 
     //move to center of canvas
     CTX.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
 }
 
-function INIT(canvas) {
+function INIT(canvas, bg, fg) {
     
     if (typeof canvas === "string") {
         canvas = document.getElementById(canvas);
@@ -30,8 +33,12 @@ function INIT(canvas) {
     CANVAS_WIDTH = canvas.width;
     CANVAS_HEIGHT = canvas.height;
 
-    //set default line style
-    CTX.strokeStyle = "#000000";
+    BG = bg || "#000000";
+    FG = fg || "#00FF00";
+
+    CTX.fillStyle = BG;
+    CTX.strokeStyle = FG;
+
     CTX.save();
     RESET();
 }
