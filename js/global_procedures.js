@@ -188,3 +188,13 @@ function GSPIRO(side, angle, max, list) {
     REPEAT(100, SUBGSPIRO, [side, angle, max, list]);
 }
 
+function RAND(min, max) {
+    return min + Math.random()*(max - min);
+}
+function RANDOM_MOVE(d1, d2, a1, a2, times) {
+    //if times is not specified, use 1000
+    REPEAT(times || 1000, function () {
+        FORWARD(RAND(d1, d2));
+        RIGHT(RAND(a1, a2));
+    });
+}
