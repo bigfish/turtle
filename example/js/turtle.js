@@ -1,5 +1,5 @@
 
-function Turtle(canvas, procedures) {
+function Turtle(canvas, bg, fg, procedures) {
 
     //private vars
     var ctx;
@@ -9,9 +9,11 @@ function Turtle(canvas, procedures) {
     var canvasWidth;
     var canvasHeight;
     var that = this;
+    var BG = bg || "#000000";
+    var FG = fg || "#00FF00";
 
     //private functions
-    function init(canvas) {
+    function init(canvas, bg, fg) {
         //try to get element from id string
         if (typeof canvas === "string") {
             canvas = document.getElementById(canvas);
@@ -30,12 +32,12 @@ function Turtle(canvas, procedures) {
         canvasWidth = canvas.width;
         canvasHeight = canvas.height;
 
+
         //save initial state
         ctx.save();
         //move to center of canvas
         ctx.translate(canvasWidth / 2, this.canvasHeight / 2);
         //set default line style
-        ctx.strokeStyle = "#000000";
         ctx.save();
         reset();
         //apply additional procedures to turtle
@@ -44,6 +46,8 @@ function Turtle(canvas, procedures) {
                 procedures[p](that);
             }   
         }
+        ctx.fillStyle = BG;
+        ctx.strokeStyle = "#FF0000";
         return that;
     }
 
@@ -54,6 +58,7 @@ function Turtle(canvas, procedures) {
         ctx.save();
         //delete everything
         ctx.clearRect(0,0,canvasWidth, canvasHeight);
+        ctx.fillRect(0,0,canvasWidth, canvasHeight);
         //move to center of canvas
         ctx.translate(canvasWidth / 2, canvasHeight / 2);
     }
@@ -92,7 +97,7 @@ function Turtle(canvas, procedures) {
     this.left = left;
     this.repeat = repeat;
 
-    init(canvas);
+    init(canvas, bg, fg);
 
     
 }
