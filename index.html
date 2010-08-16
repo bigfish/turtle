@@ -5,44 +5,13 @@
     <script src="js/turtle_procedures.js" ></script>
   </head>
   <body bgcolor="white">
-<p>One of my earliest experiences of computer programming was when my school acquired a computer lab, and we did some <a href="http://en.wikipedia.org/wiki/Turtle_graphics">Turtle Graphics</a> programming, probably in Logo. The school even had a robotic turtle which was used to draw lines on paper on the floor. I think one project we did was to draw the letters of the alphabet which made up the name of the school, or some other message. In any case I remember making the turtle go round drawing lines. Here is a typical result: </p>
-<div>
-    <canvas id="canvas" width="400" height="400" style="float:left; margin-right: 10px">
-     Your browser does not support canvas, please upgrade. 
-    </canvas>
-    <canvas id="canvas2" width="400" height="400" style="float:left; margin-right: 10px">
-     Your browser does not support canvas, please upgrade. 
-    </canvas>
-    <canvas id="canvas3" width="400" height="400" style="float:left; margin-right: 10px">
-     Your browser does not support canvas, please upgrade. 
-    </canvas>
-</div>
-    <script>
-      //create a turtle, adding procedures
-      turtle = new Turtle("canvas", "#000000", "#FF0000", [TURTLE_PROCEDURES]);
-      for (var f = 0; f < 12; f++) {
-        turtle.FLOWER(f);
-      }
+    <h3>Turtle Graphics</h3>
+<p>This is the home of my ongoing work with <a href="http://mitpress.mit.edu/catalog/item/default.asp?ttype=2&amp;tid=7287">Turtle Graphics</a>, using <a href="http://www.w3.org/TR/2dcontext/">Canvas</a>and JavaScript. See the blog post <a href="http://www.dafishinsea.com/blog/2010/08/15/166/">here</a> for more details.</p>
+    <ul>
+      <li>A simple <a href="example/">example</a></li>
+      <li><a href="explorer" >Turtle Graphics Explorer</a></li>
+      <li><a href="http://github.com/bigfish/turtle">GitHub project</a></li>
+    </ul>
 
-      turtle2 = new Turtle("canvas2", "#000000", "#00FF00", [TURTLE_PROCEDURES]);
-      turtle2.POLYSPI(1,50);
-
-      turtle3 = new Turtle("canvas3", "#000000", "#FFFF00", [TURTLE_PROCEDURES]);
-      for (var f = 0; f < 12; f++) {
-        turtle3.repeat(8, function() {
-          turtle3.CIRCLE(2);
-          turtle3.SQUARE(2);
-          turtle3.right(15);
-        });
-      }
-    </script>
-<p>Earlier this year I read <a href="">Mindstorms</a> by Seymour Papert, which also describes how computers can be used by children to learn about Mathematics and programming, and how the Turtle Graphics system is a better system for exploratory learning than the Math is conventionally taught. One of the reasons for this is that the child is able to identify with the turtle, and solve problems by walking out the path of the turtle, and performing the instructions of the program. There is a fascinating description of how younger children were actually better at figuring out how to get the turtle to draw a circle by going forward a bit and turning a bit repeatedly, than were older children who had already learned more objective facts about circles, such as that they have a radius and a center. Even older children who had learned the algebraic formula for a circle were actually incapable of solving the problem. </p>
-
-<p>Recently I discovered the Holy Grail of the field, the definitive <a href="http://mitpress.mit.edu/catalog/item/default.asp?ttype=2&amp;tid=7287">Turtle Graphics</a> by Andrea di Sessa and Harold Abelson, who also co-wrote the <a href="http://mitpress.mit.edu/sicp/full-text/book/book.html">Structure and Interpretation of Computer Programming</a>. I've only just read the first chapter, but I was inspired to try out implementing a Turtle Graphics environment in Javascript, using <a href="http://www.w3.org/TR/2dcontext/">Canvas</a> as a rendering surface. </p>
-
-
-I started out typing my functions into the Javascript Console of Chrome, but I had a vision of a web-based interactive Turtle Graphics environment, where users could run their own code and see the results instantly.  So this weekend I hacked together the <a href="explorer" >Turtle Graphics Explorer</a>. Its *not* going to work in any released version of IE (I'll add Chrome Frame soon), but that will change when IE9 ships. A new version of Chrome, Safari, Firefox, or Opera should be fine, though I admit I've not tested thoroughly. Hopefully it is easy to understand.. load an example, or look at the procedures to see how they work. There is only very rudimentary error detection, so if it does not seem to be working, you may need to re-load a working example, hit 'clear screen', or just refresh the browser. Enjoy :)</p>
-
-<p>All the code is available at the <a href="http://github.com/bigfish/turtle">GitHub project</a>.</p>
   </body>
 </html>
