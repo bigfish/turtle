@@ -25,10 +25,11 @@
       }
 
       turtle2 = new Turtle("canvas2", "#000000", "#00FF00", [TURTLE_PROCEDURES]);
-      turtle2.POLYSPI(1,50,1.5);
+      turtle2.POLYSPI(1,50);
+
       turtle3 = new Turtle("canvas3", "#000000", "#FFFF00", [TURTLE_PROCEDURES]);
       for (var f = 0; f < 12; f++) {
-        turtle3.repeat(16, function() {
+        turtle3.repeat(8, function() {
           turtle3.CIRCLE(2);
           turtle3.SQUARE(2);
           turtle3.right(15);
