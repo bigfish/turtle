@@ -1,5 +1,5 @@
 
-function Turtle(canvas, procedures) {
+function Turtle(canvas, bgcolor, fgcolor, procedures) {
 
     //private vars
     var ctx;
@@ -9,6 +9,8 @@ function Turtle(canvas, procedures) {
     var canvasWidth;
     var canvasHeight;
     var that = this;
+    var bg = bgcolor;
+    var fg = fgcolor;
 
     //private functions
     function init(canvas) {
@@ -30,12 +32,12 @@ function Turtle(canvas, procedures) {
         canvasWidth = canvas.width;
         canvasHeight = canvas.height;
 
+
         //save initial state
         ctx.save();
         //move to center of canvas
         ctx.translate(canvasWidth / 2, this.canvasHeight / 2);
         //set default line style
-        ctx.strokeStyle = "#000000";
         ctx.save();
         reset();
         //apply additional procedures to turtle
@@ -52,8 +54,12 @@ function Turtle(canvas, procedures) {
         ctx.restore();
         //save initial state for later restore
         ctx.save();
+        //set style
+        ctx.fillStyle = bg;
+        ctx.strokeStyle = fg;
         //delete everything
         ctx.clearRect(0,0,canvasWidth, canvasHeight);
+        ctx.fillRect(0,0,canvasWidth, canvasHeight);
         //move to center of canvas
         ctx.translate(canvasWidth / 2, canvasHeight / 2);
     }

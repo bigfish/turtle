@@ -1,5 +1,5 @@
 
-function Turtle(canvas, bg, fg, procedures) {
+function Turtle(canvas, bgcolor, fgcolor, procedures) {
 
     //private vars
     var ctx;
@@ -9,11 +9,11 @@ function Turtle(canvas, bg, fg, procedures) {
     var canvasWidth;
     var canvasHeight;
     var that = this;
-    var BG = bg || "#000000";
-    var FG = fg || "#00FF00";
+    var bg = bgcolor;
+    var fg = fgcolor;
 
     //private functions
-    function init(canvas, bg, fg) {
+    function init(canvas) {
         //try to get element from id string
         if (typeof canvas === "string") {
             canvas = document.getElementById(canvas);
@@ -46,8 +46,6 @@ function Turtle(canvas, bg, fg, procedures) {
                 procedures[p](that);
             }   
         }
-        ctx.fillStyle = BG;
-        ctx.strokeStyle = "#FF0000";
         return that;
     }
 
@@ -56,6 +54,9 @@ function Turtle(canvas, bg, fg, procedures) {
         ctx.restore();
         //save initial state for later restore
         ctx.save();
+        //set style
+        ctx.fillStyle = bg;
+        ctx.strokeStyle = fg;
         //delete everything
         ctx.clearRect(0,0,canvasWidth, canvasHeight);
         ctx.fillRect(0,0,canvasWidth, canvasHeight);
@@ -97,7 +98,7 @@ function Turtle(canvas, bg, fg, procedures) {
     this.left = left;
     this.repeat = repeat;
 
-    init(canvas, bg, fg);
+    init(canvas);
 
     
 }
