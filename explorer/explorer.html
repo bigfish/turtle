@@ -99,7 +99,6 @@ function load_example(index) {
   var example = $("select_example").value;
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
-  console.log(this.readyState);
     if(this.readyState == 4 && this.status == 200) {
       if(this.responseText) {
         buffer.value = this.responseText;
