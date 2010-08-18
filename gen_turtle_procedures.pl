@@ -4,8 +4,12 @@
 #and add as methods to the 't' Turtle instance
 my $TAB = '	';
 my @functions = ();
+
+my $turtle_file = shift;
+
 #first argument should be path to global_procedures.js
-my $file = shift;
+my $procedures_file = shift;
+
 #first echo header
 $HEADER = <<END_HEADER;
 //exposes the global function TURTLE_PROCEDURES
@@ -15,55 +19,34 @@ var TURTLE_PROCEDURES = function (t) {
         
     //wrap core turtle methods in functions
 
-    function FORWARD(len) {
-        t.FORWARD(len);
-    }
-
-    function RIGHT(angle) {
-        t.RIGHT(angle);
-    }
-
-    function LEFT(angle) {
-        t.LEFT(angle);
-    }
-
-    function BACK(len) {
-        t.BACK(len);
-    }
-
-    function REPEAT(times, fn, args) {
-        t.REPEAT(times, fn, args);
-    }
-
-    function PENUP() {
-        t.PENUP();
-    }
-
-    function PENDOWN() {
-        t.PENDOWN();
-    }
-
-	function BEARING() {
-		return t.BEARING();
-	}
-
-	function OUT_OF_BOUNDS() {
-		return t.OUT_OF_BOUNDS();
-	}
-
-	function CHECK_FORWARD(len) {
-		t.CHECK_FORWARD(len);
-	}
-
-	function STUCK() {
-		return t.STUCK();
-	}
-
-    //end wrapper functions
 END_HEADER
 print $HEADER;
+
+#read turtle procedures file 
+open(FILE, $turtle_file);
+@lines = <FILE>;
+close(FILE);
+
+#get functions from turtle and wrap for use in procedures
+#except INIT
+my $fname;
+my $sig;
+foreach $line(@lines) {
+	#wrap the function
+	if ($line =~ /^\s*function ([A-Za-z0-9_\$]+)([^{]*)/) {
+		print $TAB.$line;
+		$fname = $1;
+		$sig = $2;
+		$sig =~ s/\s+$//;
+		print $TAB.$TAB."return t.".$fname.$sig.";\n";
+		print $TAB."}\n";
+		print "\n";
+	}
+}
+print( "   //end wrapper functions\n");
+
 #read global procedures file 
-open(FILE, $file);
+open(FILE, $procedures_file);
 @lines = <FILE>;
 close(FILE);
 #skip the starting comments as they do not apply in this context

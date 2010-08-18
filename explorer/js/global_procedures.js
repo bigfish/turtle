@@ -200,7 +200,6 @@ function RANDOM_MOVE(d1, d2, a1, a2, times) {
     });
 }
 
-
 function RANDOM_MOVE_IN_BOX(d1, d2, a1, a2, times) {
     //if times is not specified, use 1000
     REPEAT(times || 1000, function () {

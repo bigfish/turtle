@@ -36,7 +36,10 @@ foreach $line(@lines) {
 	#match a function statement and capture the name
 	if ($skipped_starting_comments) {
 		if ($line =~ /^\s*function ([A-Za-z0-9_\$]+)/) {
-			$got_global_vars = 1;
+			if(!$got_global_vars) {
+				print "\n";
+				$got_global_vars = 1;
+			}
 			push(@functions, $1);
 		}
 		if(	$got_global_vars == 1) {

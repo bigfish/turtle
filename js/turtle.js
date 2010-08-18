@@ -14,6 +14,7 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	var DEG2RAD = PI / 180;
 	var RAD2DEG = 180 / PI;
 	var FORWARD_FAILED;
+
 	function RESET() {
 	    //reset transform matrix to default
 	    CTX.setTransform(1, 0, 0, 1, 0, 0);

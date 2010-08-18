@@ -5,36 +5,44 @@ var TURTLE_PROCEDURES = function (t) {
         
     //wrap core turtle methods in functions
 
-    function FORWARD(len) {
-        t.FORWARD(len);
-    }
+	function RESET() {
+		return t.RESET();
+	}
 
-    function RIGHT(angle) {
-        t.RIGHT(angle);
-    }
+	function INIT(canvas, bg, fg) {
+		return t.INIT(canvas, bg, fg);
+	}
 
-    function LEFT(angle) {
-        t.LEFT(angle);
-    }
+	function FORWARD(len) {
+		return t.FORWARD(len);
+	}
 
-    function BACK(len) {
-        t.BACK(len);
-    }
+	function BACK(len) {
+		return t.BACK(len);
+	}
 
-    function REPEAT(times, fn, args) {
-        t.REPEAT(times, fn, args);
-    }
+	function RIGHT(angle) {
+		return t.RIGHT(angle);
+	}
 
-    function PENUP() {
-        t.PENUP();
-    }
+	function LEFT(angle) {
+		return t.LEFT(angle);
+	}
 
-    function PENDOWN() {
-        t.PENDOWN();
-    }
+	function REPEAT(times, fn, args) {
+		return t.REPEAT(times, fn, args);
+	}
 
 	function BEARING() {
 		return t.BEARING();
+	}
+
+	function PENDOWN() {
+		return t.PENDOWN();
+	}
+
+	function PENUP() {
+		return t.PENUP();
 	}
 
 	function OUT_OF_BOUNDS() {
@@ -42,14 +50,14 @@ var TURTLE_PROCEDURES = function (t) {
 	}
 
 	function CHECK_FORWARD(len) {
-		t.CHECK_FORWARD(len);
+		return t.CHECK_FORWARD(len);
 	}
 
 	function STUCK() {
 		return t.STUCK();
 	}
 
-    //end wrapper functions
+   //end wrapper functions
 	
 	function SQUAREPIECE(size) {
 	    FORWARD(size);
@@ -241,7 +249,6 @@ var TURTLE_PROCEDURES = function (t) {
 	        RIGHT(RAND(a1, a2));
 	    });
 	}
-	
 	
 	function RANDOM_MOVE_IN_BOX(d1, d2, a1, a2, times) {
 	    //if times is not specified, use 1000

@@ -10,7 +10,7 @@ EXAMPLE=example
 OUTPUT_FILE=$(JSDIR)/turtle_procedures.js
 OUTPUT_FILE2=$(JSDIR)/turtle.js
 $(OUTPUT_FILE):	$(JSDIR)/global_procedures.js
-	@./gen_turtle_procedures.pl $(JSDIR)/global_procedures.js > $(OUTPUT_FILE)
+	@./gen_turtle_procedures.pl $(JSDIR)/turtle_global.js $(JSDIR)/global_procedures.js > $(OUTPUT_FILE)
 	@./gen_turtle.pl $(JSDIR)/turtle_global.js > $(OUTPUT_FILE2)
 	@cp -R $(JSDIR) $(EXPLORER)/
 	@cp -R $(JSDIR) $(EXAMPLE)/
