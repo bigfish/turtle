@@ -1,0 +1,23 @@
+<html>
+	<head>
+	<style>
+      body, pre {
+        font-family: Verdana, Arial, Helvetica;
+        font-size: .85em;
+		background: #000000;
+		color: #00FF00;
+      }
+	  </style>
+	</head>
+	<body>
+	<pre>
+function RANDOM_MOVE(d1, d2, a1, a2, times) {
+    //if times is not specified, use 1000
+    REPEAT(times || 1000, function () {
+        FORWARD(RAND(d1, d2));
+        RIGHT(RAND(a1, a2));
+    });
+}
+
+
+</pre></body></html>
