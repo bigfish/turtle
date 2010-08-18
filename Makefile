@@ -9,7 +9,7 @@ EXAMPLE=example
 #generate turtle_procedures 
 OUTPUT_FILE=$(JSDIR)/turtle_procedures.js
 $(OUTPUT_FILE):	$(JSDIR)/global_procedures.js
-	@./gen_turtle_procedures.pl $(JSDIR)/global_procedures.js >> $(OUTPUT_FILE)
+	@./gen_turtle_procedures.pl $(JSDIR)/global_procedures.js > $(OUTPUT_FILE)
 	@cp -R $(JSDIR) $(EXPLORER)/
 	@cp -R $(JSDIR) $(EXAMPLE)/
 	@rm -rf procedures

@@ -1,4 +1,3 @@
-
 function Turtle(canvas, bgcolor, fgcolor, procedures) {
 
     //private vars
@@ -11,6 +10,7 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
     var that = this;
     var bg = bgcolor;
     var fg = fgcolor;
+    var pen_down = true;
 
     //private functions
     function init(canvas) {
@@ -32,35 +32,36 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
         canvasWidth = canvas.width;
         canvasHeight = canvas.height;
 
-
         //save initial state
-        ctx.save();
+        //ctx.save();
         //move to center of canvas
-        ctx.translate(canvasWidth / 2, this.canvasHeight / 2);
+        //ctx.translate(canvasWidth / 2, this.canvasHeight / 2);
         //set default line style
-        ctx.save();
+        //ctx.save();
         reset();
         //apply additional procedures to turtle
         if (procedures) {
             for (var p = 0; p < procedures.length; p++) {
                 procedures[p](that);
-            }   
+            }
         }
         return that;
     }
 
     function reset() {
         //clear state
-        ctx.restore();
+        //reset transform matrix to default
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        //ctx.restore();
         //save initial state for later restore
-        ctx.save();
+        //ctx.save();
         //set style
+        pen_down = true;
         ctx.fillStyle = bg;
         ctx.strokeStyle = fg;
         //delete everything
-        ctx.clearRect(0,0,canvasWidth, canvasHeight);
-        ctx.fillRect(0,0,canvasWidth, canvasHeight);
-        //move to center of canvas
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
         ctx.translate(canvasWidth / 2, canvasHeight / 2);
     }
 
@@ -68,9 +69,15 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
         ctx.beginPath();
         ctx.moveTo(0, 0);
         //forwards = up : reverse the Y coordinate
-        ctx.lineTo(0, - len);
-        ctx.translate(0, - len);
-        ctx.stroke();
+        if (pen_down) {
+            ctx.lineTo(0, - len);
+            ctx.translate(0, - len);
+            ctx.stroke();
+        } else {
+            ctx.moveTo(0, - len);
+            ctx.translate(0, - len);
+
+        }
     }
 
     function back(len) {
@@ -91,16 +98,24 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
         }
     }
 
+    function penup() {
+        pen_down = true;
+    }
+
+    function pendown() {
+        pen_down = false;
+    }
+
     this.reset = reset;
     this.forward = forward;
     this.back = back;
     this.right = right;
     this.left = left;
     this.repeat = repeat;
+    this.penup = penup;
+    this.pendown = pendown;
 
     init(canvas);
 
-    
 }
-
 

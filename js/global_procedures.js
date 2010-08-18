@@ -8,13 +8,14 @@
  * which can be passed to the Turtle constructor to add 
  * the procedures to an instance of a Turtle.
  */
+var FORWARD_FAILED;
 
-function SQUAREPIECE (size) {
+function SQUAREPIECE(size) {
     FORWARD(size);
     RIGHT(90);
 }
 
-function SQUARE (size) {
+function SQUARE(size) {
     REPEAT(4, SQUAREPIECE, [size]);
 }
 
@@ -189,8 +190,9 @@ function GSPIRO(side, angle, max, list) {
 }
 
 function RAND(min, max) {
-    return min + Math.random()*(max - min);
+    return min + Math.random() * (max - min);
 }
+
 function RANDOM_MOVE(d1, d2, a1, a2, times) {
     //if times is not specified, use 1000
     REPEAT(times || 1000, function () {
@@ -199,53 +201,40 @@ function RANDOM_MOVE(d1, d2, a1, a2, times) {
     });
 }
 
-function XCOR() {
-    //determining global co-ords of turtle
-    //which is always at local 0,0
-    var localX = 0, localY = 0;
-    //we will check X points across the screen at the midpoint
-    //between the top and bottom
-    var y = CANVAS_HEIGHT/2;
-    //initially set result X coord to be -1 in case it is not found
-    var globalX = -1;
-    //start a path for the 'cross-hair' vertical line
-    //which we will draw at the X position of the turtle ( x = 0 )
-    CTX.beginPath();
-    //make it as high as the screen in both directions
-    //to account for extremes of top and bottom
-    CTX.moveTo(localX,-CANVAS_HEIGHT);
-    CTX.lineTo(localX,CANVAS_HEIGHT);
-    //check if each X pos on the midpoint horizontal line
-    //is on the 'cross-hair' line 
-   for(var x = 0; x < CANVAS_WIDTH; x++) {
-         if(CTX.isPointInPath(x,y)) {
-           console.log("XCOR = "+x);
-           globalX = x;
-           break;
-         }
+function OUT_OF_BOUNDS() {
+    if (XCOR < 0 || XCOR >= CANVAS_WIDTH) {
+        return true;
+    } else if (YCOR < 0 || YCOR >= CANVAS_HEIGHT) {
+        return true;
+    } else {
+        return false;
     }
-    return globalX;
-    //will return -1 if offscreen
-}
-function YCOR() {
-    var localX = 0, localY = 0;
-    var globalY = -1;
-    //draw horizontal 'cross-hair' line at turtle Y position (0)
-    CTX.beginPath();
-    CTX.moveTo(-CANVAS_WIDTH, localY);
-    CTX.lineTo(CANVAS_WIDTH, localY);
-    var x = CANVAS_WIDTH/2;
-    //check all Y positions (globally) along midline of screen
-    for(var y = 0; y < CANVAS_HEIGHT; y++) {
-         if(CTX.isPointInPath(x,y)) {
-            //we collided with the horizontal cross-hair
-            //this is the Y position of the turtle
-            globalY = y;
-            break;
-         }
-    }
-    return globalY;
-    //will return -1 if offscreen
 }
 
+function CHECK_FORWARD(len) {
+    PENUP();
+    FORWARD(len);
+    FORWARD_FAILED = OUT_OF_BOUNDS();
+    BACK(len);
+    if (!FORWARD_FAILED) {
+        PENDOWN();
+        FORWARD(len);
+    }
+    PENDOWN();
+}
+
+function STUCK() {
+    return FORWARD_FAILED;
+}
+
+function RANDOM_MOVE_IN_BOX(d1, d2, a1, a2, times) {
+    //if times is not specified, use 1000
+    REPEAT(times || 1000, function () {
+        RIGHT(RAND(a1, a2));
+        CHECK_FORWARD(RAND(d1, d2));
+        if (STUCK()) {
+            RIGHT(180);
+        }
+    });
+}
 

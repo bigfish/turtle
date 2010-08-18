@@ -35,6 +35,14 @@ var TURTLE_PROCEDURES = function (t) {
     function REPEAT(times, fn, args) {
         t.repeat(times, fn, args);
     }
+
+    function PENUP() {
+        t.penup();
+    }
+
+    function PENDOWN() {
+        t.pendown();
+    }
     //end wrapper functions
 END_HEADER
 print $HEADER;
