@@ -8,8 +8,10 @@ EXPLORER=explorer
 EXAMPLE=example
 #generate turtle_procedures 
 OUTPUT_FILE=$(JSDIR)/turtle_procedures.js
+OUTPUT_FILE2=$(JSDIR)/turtle.js
 $(OUTPUT_FILE):	$(JSDIR)/global_procedures.js
 	@./gen_turtle_procedures.pl $(JSDIR)/global_procedures.js > $(OUTPUT_FILE)
+	@./gen_turtle.pl $(JSDIR)/turtle_global.js > $(OUTPUT_FILE2)
 	@cp -R $(JSDIR) $(EXPLORER)/
 	@cp -R $(JSDIR) $(EXAMPLE)/
 	@rm -rf procedures

@@ -1,121 +1,157 @@
+
 function Turtle(canvas, bgcolor, fgcolor, procedures) {
 
-    //private vars
-    var ctx;
-    var PI = Math.PI;
-    var DEG2RAD = PI / 180;
-    var RAD2DEG = 180 / PI;
-    var canvasWidth;
-    var canvasHeight;
-    var that = this;
-    var bg = bgcolor;
-    var fg = fgcolor;
-    var pen_down = true;
+	var CTX;
+	var CANVAS_WIDTH;
+	var CANVAS_HEIGHT;
+	var BG;
+	var FG;
+	var XCOR; 
+	var YCOR; 
+	var ROTATION; 
+	var PEN_DOWN;
+	var PI = Math.PI;
+	var DEG2RAD = PI / 180;
+	var RAD2DEG = 180 / PI;
+	var FORWARD_FAILED;
+	function RESET() {
+	    //reset transform matrix to default
+	    CTX.setTransform(1, 0, 0, 1, 0, 0);
+	    //delete everything
+	    CTX.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+	    //fill with background color
+	    CTX.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+	    XCOR = CANVAS_WIDTH / 2;
+	    YCOR = CANVAS_HEIGHT / 2;
+	    ROTATION = 90;
+	    PEN_DOWN = true;
+	    //move to center of canvas
+	    CTX.translate(XCOR, YCOR);
+	}
+	
+	function INIT(canvas, bg, fg) {
+	
+	    if (typeof canvas === "string") {
+	        canvas = document.getElementById(canvas);
+	    }
+	    if (canvas.getContext) {
+	        CTX = canvas.getContext("2d");
+	    } else {
+	        return;
+	    }
+	
+	    CANVAS_WIDTH = canvas.width;
+	    CANVAS_HEIGHT = canvas.height;
+	
+	    BG = bg || "#000000";
+	    FG = fg || "#00FF00";
+	
+	    CTX.fillStyle = BG;
+	    CTX.strokeStyle = FG;
+	
+	    CTX.save();
+	    RESET();
+	}
+	
+	function FORWARD(len) {
+	    CTX.beginPath();
+	    CTX.moveTo(0, 0);
+	    //forwards = up : reverse the Y coordinate
+	    if (PEN_DOWN) {
+	        CTX.lineTo(0, - len);
+	        CTX.translate(0, - len);
+	        CTX.stroke();
+	    } else {
+	        CTX.moveTo(0, -len);
+	        CTX.translate(0, -len);
+	    }
+	
+	    //update XCOR & YCOR 
+	    XCOR += len * Math.cos(ROTATION * Math.PI / 180);
+	    YCOR += len * Math.sin(ROTATION * Math.PI / 180);
+	}
+	
+	function BACK(len) {
+	    FORWARD( - len);
+	}
+	
+	function RIGHT(angle) {
+	    ROTATION -= angle;
+	    ROTATION %= 360;
+	    CTX.rotate(angle * Math.PI / 180);
+	}
+	
+	function LEFT(angle) {
+	    RIGHT( - angle);
+	}
+	
+	function REPEAT(times, fn, args) {
+	    for (var i = 0; i < times; i++) {
+	        fn.apply(this, args || []);
+	    }
+	}
+	
+	function BEARING() {
+	    return ROTATION + 90;
+	}
+	
+	function PENDOWN() {
+	    PEN_DOWN = true;
+	}
+	
+	function PENUP() {
+	    PEN_DOWN = false;
+	}
+	
+	function OUT_OF_BOUNDS() {
+	    if (XCOR < 0 || XCOR >= CANVAS_WIDTH) {
+	        return true;
+	    } else if (YCOR < 0 || YCOR >= CANVAS_HEIGHT) {
+	        return true;
+	    } else {
+	        return false;
+	    }
+	}
+	
+	function CHECK_FORWARD(len) {
+	    PENUP();
+	    FORWARD(len);
+	    FORWARD_FAILED = OUT_OF_BOUNDS();
+	    BACK(len);
+	    if (!FORWARD_FAILED) {
+	        PENDOWN();
+	        FORWARD(len);
+	    }
+	    PENDOWN();
+	}
+	
+	function STUCK() {
+	    return FORWARD_FAILED;
+	}
 
-    //private functions
-    function init(canvas) {
-        //try to get element from id string
-        if (typeof canvas === "string") {
-            canvas = document.getElementById(canvas);
-            if (!canvas) {
-                window.alert("Could not find canvas element with id '" + canvas + "'");
-                return;
-            }
-        }
-        //attempt to initialize 2D context on given element or fail
-        try {
-            ctx = canvas.getContext("2d");
-        } catch(e) {
-            window.alert("Unable to initialize canvas 2D context. \n" + e.msg);
-            return;
-        }
-        canvasWidth = canvas.width;
-        canvasHeight = canvas.height;
+	//public methods 
+	this.RESET = RESET;
+	this.INIT = INIT;
+	this.FORWARD = FORWARD;
+	this.BACK = BACK;
+	this.RIGHT = RIGHT;
+	this.LEFT = LEFT;
+	this.REPEAT = REPEAT;
+	this.BEARING = BEARING;
+	this.PENDOWN = PENDOWN;
+	this.PENUP = PENUP;
+	this.OUT_OF_BOUNDS = OUT_OF_BOUNDS;
+	this.CHECK_FORWARD = CHECK_FORWARD;
+	this.STUCK = STUCK;
 
-        //save initial state
-        //ctx.save();
-        //move to center of canvas
-        //ctx.translate(canvasWidth / 2, this.canvasHeight / 2);
-        //set default line style
-        //ctx.save();
-        reset();
-        //apply additional procedures to turtle
-        if (procedures) {
-            for (var p = 0; p < procedures.length; p++) {
-                procedures[p](that);
-            }
-        }
-        return that;
-    }
+	INIT(canvas, bgcolor, fgcolor);
 
-    function reset() {
-        //clear state
-        //reset transform matrix to default
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        //ctx.restore();
-        //save initial state for later restore
-        //ctx.save();
-        //set style
-        pen_down = true;
-        ctx.fillStyle = bg;
-        ctx.strokeStyle = fg;
-        //delete everything
-        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-        ctx.translate(canvasWidth / 2, canvasHeight / 2);
-    }
-
-    function forward(len) {
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        //forwards = up : reverse the Y coordinate
-        if (pen_down) {
-            ctx.lineTo(0, - len);
-            ctx.translate(0, - len);
-            ctx.stroke();
-        } else {
-            ctx.moveTo(0, - len);
-            ctx.translate(0, - len);
-
-        }
-    }
-
-    function back(len) {
-        forward( - len);
-    }
-
-    function right(angle) {
-        ctx.rotate(angle * DEG2RAD);
-    }
-
-    function left(angle) {
-        right( - angle);
-    }
-
-    function repeat(times, fn, args) {
-        for (var i = 0; i < times; i++) {
-            fn.apply(this, args || []);
-        }
-    }
-
-    function penup() {
-        pen_down = true;
-    }
-
-    function pendown() {
-        pen_down = false;
-    }
-
-    this.reset = reset;
-    this.forward = forward;
-    this.back = back;
-    this.right = right;
-    this.left = left;
-    this.repeat = repeat;
-    this.penup = penup;
-    this.pendown = pendown;
-
-    init(canvas);
-
+	var that = this;
+	//apply additional procedures to turtle
+	if (procedures) {
+		for (var p = 0; p < procedures.length; p++) {
+			procedures[p](that);
+		}
+	}
+	return that;
 }
-

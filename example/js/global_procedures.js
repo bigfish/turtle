@@ -8,7 +8,6 @@
  * which can be passed to the Turtle constructor to add 
  * the procedures to an instance of a Turtle.
  */
-var FORWARD_FAILED;
 
 function SQUAREPIECE(size) {
     FORWARD(size);
@@ -201,31 +200,6 @@ function RANDOM_MOVE(d1, d2, a1, a2, times) {
     });
 }
 
-function OUT_OF_BOUNDS() {
-    if (XCOR < 0 || XCOR >= CANVAS_WIDTH) {
-        return true;
-    } else if (YCOR < 0 || YCOR >= CANVAS_HEIGHT) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-function CHECK_FORWARD(len) {
-    PENUP();
-    FORWARD(len);
-    FORWARD_FAILED = OUT_OF_BOUNDS();
-    BACK(len);
-    if (!FORWARD_FAILED) {
-        PENDOWN();
-        FORWARD(len);
-    }
-    PENDOWN();
-}
-
-function STUCK() {
-    return FORWARD_FAILED;
-}
 
 function RANDOM_MOVE_IN_BOX(d1, d2, a1, a2, times) {
     //if times is not specified, use 1000

@@ -2,7 +2,19 @@
 //(uses global functions for easier interactive use)
 //but only suports a single Turtle context
 //for OOP style use turtle.js & turtle_procedures.js
-var CTX, CANVAS_WIDTH, CANVAS_HEIGHT, BG, FG, XCOR, YCOR, ROTATION, PEN_DOWN;
+var CTX;
+var CANVAS_WIDTH;
+var CANVAS_HEIGHT;
+var BG;
+var FG;
+var XCOR; 
+var YCOR; 
+var ROTATION; 
+var PEN_DOWN;
+var PI = Math.PI;
+var DEG2RAD = PI / 180;
+var RAD2DEG = 180 / PI;
+var FORWARD_FAILED;
 
 function RESET() {
     //reset transform matrix to default
@@ -88,6 +100,33 @@ function BEARING() {
 function PENDOWN() {
     PEN_DOWN = true;
 }
+
 function PENUP() {
     PEN_DOWN = false;
+}
+
+function OUT_OF_BOUNDS() {
+    if (XCOR < 0 || XCOR >= CANVAS_WIDTH) {
+        return true;
+    } else if (YCOR < 0 || YCOR >= CANVAS_HEIGHT) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function CHECK_FORWARD(len) {
+    PENUP();
+    FORWARD(len);
+    FORWARD_FAILED = OUT_OF_BOUNDS();
+    BACK(len);
+    if (!FORWARD_FAILED) {
+        PENDOWN();
+        FORWARD(len);
+    }
+    PENDOWN();
+}
+
+function STUCK() {
+    return FORWARD_FAILED;
 }

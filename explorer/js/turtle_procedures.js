@@ -4,37 +4,52 @@
 var TURTLE_PROCEDURES = function (t) {
         
     //wrap core turtle methods in functions
-    //to avoid calling as methods
 
     function FORWARD(len) {
-        t.forward(len);
+        t.FORWARD(len);
     }
 
     function RIGHT(angle) {
-        t.right(angle);
+        t.RIGHT(angle);
     }
 
     function LEFT(angle) {
-        t.left(angle);
+        t.LEFT(angle);
     }
 
     function BACK(len) {
-        t.back(len);
+        t.BACK(len);
     }
 
     function REPEAT(times, fn, args) {
-        t.repeat(times, fn, args);
+        t.REPEAT(times, fn, args);
     }
 
     function PENUP() {
-        t.penup();
+        t.PENUP();
     }
 
     function PENDOWN() {
-        t.pendown();
+        t.PENDOWN();
     }
+
+	function BEARING() {
+		return t.BEARING();
+	}
+
+	function OUT_OF_BOUNDS() {
+		return t.OUT_OF_BOUNDS();
+	}
+
+	function CHECK_FORWARD(len) {
+		t.CHECK_FORWARD(len);
+	}
+
+	function STUCK() {
+		return t.STUCK();
+	}
+
     //end wrapper functions
-	var FORWARD_FAILED;
 	
 	function SQUAREPIECE(size) {
 	    FORWARD(size);
@@ -227,31 +242,6 @@ var TURTLE_PROCEDURES = function (t) {
 	    });
 	}
 	
-	function OUT_OF_BOUNDS() {
-	    if (XCOR < 0 || XCOR >= CANVAS_WIDTH) {
-	        return true;
-	    } else if (YCOR < 0 || YCOR >= CANVAS_HEIGHT) {
-	        return true;
-	    } else {
-	        return false;
-	    }
-	}
-	
-	function CHECK_FORWARD(len) {
-	    PENUP();
-	    FORWARD(len);
-	    FORWARD_FAILED = OUT_OF_BOUNDS();
-	    BACK(len);
-	    if (!FORWARD_FAILED) {
-	        PENDOWN();
-	        FORWARD(len);
-	    }
-	    PENDOWN();
-	}
-	
-	function STUCK() {
-	    return FORWARD_FAILED;
-	}
 	
 	function RANDOM_MOVE_IN_BOX(d1, d2, a1, a2, times) {
 	    //if times is not specified, use 1000
@@ -289,9 +279,6 @@ var TURTLE_PROCEDURES = function (t) {
 	t.GSPIRO = GSPIRO;
 	t.RAND = RAND;
 	t.RANDOM_MOVE = RANDOM_MOVE;
-	t.OUT_OF_BOUNDS = OUT_OF_BOUNDS;
-	t.CHECK_FORWARD = CHECK_FORWARD;
-	t.STUCK = STUCK;
 	t.RANDOM_MOVE_IN_BOX = RANDOM_MOVE_IN_BOX;
 
 };

@@ -14,35 +14,51 @@ $HEADER = <<END_HEADER;
 var TURTLE_PROCEDURES = function (t) {
         
     //wrap core turtle methods in functions
-    //to avoid calling as methods
 
     function FORWARD(len) {
-        t.forward(len);
+        t.FORWARD(len);
     }
 
     function RIGHT(angle) {
-        t.right(angle);
+        t.RIGHT(angle);
     }
 
     function LEFT(angle) {
-        t.left(angle);
+        t.LEFT(angle);
     }
 
     function BACK(len) {
-        t.back(len);
+        t.BACK(len);
     }
 
     function REPEAT(times, fn, args) {
-        t.repeat(times, fn, args);
+        t.REPEAT(times, fn, args);
     }
 
     function PENUP() {
-        t.penup();
+        t.PENUP();
     }
 
     function PENDOWN() {
-        t.pendown();
+        t.PENDOWN();
     }
+
+	function BEARING() {
+		return t.BEARING();
+	}
+
+	function OUT_OF_BOUNDS() {
+		return t.OUT_OF_BOUNDS();
+	}
+
+	function CHECK_FORWARD(len) {
+		t.CHECK_FORWARD(len);
+	}
+
+	function STUCK() {
+		return t.STUCK();
+	}
+
     //end wrapper functions
 END_HEADER
 print $HEADER;
