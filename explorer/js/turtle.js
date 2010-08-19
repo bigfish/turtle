@@ -4,6 +4,8 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	var CTX;
 	var CANVAS_WIDTH;
 	var CANVAS_HEIGHT;
+	var DEFAULT_BG;
+	var DEFAULT_FG;
 	var BG;
 	var FG;
 	var XCOR; 
@@ -14,6 +16,8 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	var DEG2RAD = PI / 180;
 	var RAD2DEG = 180 / PI;
 	var FORWARD_FAILED;
+	var FILL = "";
+	var MODE = "immediate";
 
 	function RESET() {
 	    //reset transform matrix to default
@@ -21,11 +25,15 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	    //delete everything
 	    CTX.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 	    //fill with background color
+	    CTX.fillStyle = DEFAULT_BG;
+	    CTX.strokeStyle = DEFAULT_FG;
 	    CTX.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+	
 	    XCOR = CANVAS_WIDTH / 2;
 	    YCOR = CANVAS_HEIGHT / 2;
 	    ROTATION = 90;
 	    PEN_DOWN = true;
+	    MODE = "immediate";
 	    //move to center of canvas
 	    CTX.translate(XCOR, YCOR);
 	}
@@ -44,24 +52,25 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	    CANVAS_WIDTH = canvas.width;
 	    CANVAS_HEIGHT = canvas.height;
 	
-	    BG = bg || "#000000";
-	    FG = fg || "#00FF00";
-	
-	    CTX.fillStyle = BG;
-	    CTX.strokeStyle = FG;
+	    BG = DEFAULT_BG = bg || "#000000";
+	    FG = DEFAULT_FG = fg || "#00FF00";
 	
 	    CTX.save();
 	    RESET();
 	}
 	
 	function FORWARD(len) {
-	    CTX.beginPath();
-	    CTX.moveTo(0, 0);
+	    if(MODE == "immediate") {
+	        CTX.beginPath();
+	        CTX.moveTo(0,0);
+	    }
 	    //forwards = up : reverse the Y coordinate
 	    if (PEN_DOWN) {
 	        CTX.lineTo(0, - len);
 	        CTX.translate(0, - len);
-	        CTX.stroke();
+	        if (MODE == "immediate") {
+	            CTX.stroke();
+	        }
 	    } else {
 	        CTX.moveTo(0, -len);
 	        CTX.translate(0, -len);
@@ -98,8 +107,11 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	
 	function PENDOWN() {
 	    PEN_DOWN = true;
+	    if(MODE == "delayed") {
+	        CTX.beginPath();
+	        CTX.moveTo(0, 0);
+	    }
 	}
-	
 	function PENUP() {
 	    PEN_DOWN = false;
 	}
@@ -112,6 +124,12 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	    } else {
 	        return false;
 	    }
+	}
+	
+	function MOVE_FORWARD(len) {
+	    PENUP();
+	    FORWARD(len);
+	    PENDOWN();
 	}
 	
 	function CHECK_FORWARD(len) {
@@ -129,6 +147,35 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	function STUCK() {
 	    return FORWARD_FAILED;
 	}
+	
+	function SET_BG(color) {
+	    BG = color;
+	}
+	
+	function SET_LINE(color) {
+	    FG = color;
+	    CTX.strokeStyle = FG;
+	}
+	
+	function BEGIN_FILL(color) {
+	    FILL = color;
+	    CTX.fillStyle = FILL;
+	    MODE = "delayed";
+	    //end the previous path
+	    //and start a new one
+	    //since the whole path will be filled
+	    PENDOWN();
+	}
+	
+	function END_FILL() {
+	    //execute delayed rendering
+	    CTX.fill();
+	    CTX.stroke();
+	    //go back to immediate mode
+	    MODE = "immediate";
+	    FILL = "";
+	}
+	
 
 	//public methods 
 	this.RESET = RESET;
@@ -142,8 +189,13 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	this.PENDOWN = PENDOWN;
 	this.PENUP = PENUP;
 	this.OUT_OF_BOUNDS = OUT_OF_BOUNDS;
+	this.MOVE_FORWARD = MOVE_FORWARD;
 	this.CHECK_FORWARD = CHECK_FORWARD;
 	this.STUCK = STUCK;
+	this.SET_BG = SET_BG;
+	this.SET_LINE = SET_LINE;
+	this.BEGIN_FILL = BEGIN_FILL;
+	this.END_FILL = END_FILL;
 
 	INIT(canvas, bgcolor, fgcolor);
 

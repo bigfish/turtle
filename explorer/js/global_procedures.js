@@ -211,3 +211,11 @@ function RANDOM_MOVE_IN_BOX(d1, d2, a1, a2, times) {
     });
 }
 
+function RANDOM_COLOR() {
+    var hex = "0123456789ABCDEF";
+    var rgb = "";
+    for (var i = 0; i < 6; i++) {
+        rgb += hex.charAt(Math.round(Math.random()*15));
+    }
+    return "#" + rgb;
+}

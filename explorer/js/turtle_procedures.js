@@ -49,12 +49,32 @@ var TURTLE_PROCEDURES = function (t) {
 		return t.OUT_OF_BOUNDS();
 	}
 
+	function MOVE_FORWARD(len) {
+		return t.MOVE_FORWARD(len);
+	}
+
 	function CHECK_FORWARD(len) {
 		return t.CHECK_FORWARD(len);
 	}
 
 	function STUCK() {
 		return t.STUCK();
+	}
+
+	function SET_BG(color) {
+		return t.SET_BG(color);
+	}
+
+	function SET_LINE(color) {
+		return t.SET_LINE(color);
+	}
+
+	function BEGIN_FILL(color) {
+		return t.BEGIN_FILL(color);
+	}
+
+	function END_FILL() {
+		return t.END_FILL();
 	}
 
    //end wrapper functions
@@ -261,6 +281,14 @@ var TURTLE_PROCEDURES = function (t) {
 	    });
 	}
 	
+	function RANDOM_COLOR() {
+	    var hex = "0123456789ABCDEF";
+	    var rgb = "";
+	    for (var i = 0; i < 6; i++) {
+	        rgb += hex.charAt(Math.round(Math.random()*15));
+	    }
+	    return "#" + rgb;
+	}
 
 	t.SQUAREPIECE = SQUAREPIECE;
 	t.SQUARE = SQUARE;
@@ -287,5 +315,6 @@ var TURTLE_PROCEDURES = function (t) {
 	t.RAND = RAND;
 	t.RANDOM_MOVE = RANDOM_MOVE;
 	t.RANDOM_MOVE_IN_BOX = RANDOM_MOVE_IN_BOX;
+	t.RANDOM_COLOR = RANDOM_COLOR;
 
 };
