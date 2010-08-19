@@ -1,0 +1,4 @@
+REPEAT(100, function() {
+SET_LINE( RANDOM_COLOR() );
+RANDOM_MOVE_IN_BOX(1,5,RAND(-90,0), RAND(0, 90));
+});
