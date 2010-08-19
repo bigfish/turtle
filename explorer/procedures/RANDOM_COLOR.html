@@ -1,0 +1,21 @@
+<html>
+	<head>
+	<style>
+      body, pre {
+        font-family: Verdana, Arial, Helvetica;
+        font-size: .85em;
+		background: #000000;
+		color: #00FF00;
+      }
+	  </style>
+	</head>
+	<body>
+	<pre>
+function RANDOM_COLOR() {
+    var hex = "0123456789ABCDEF";
+    var rgb = "";
+    for (var i = 0; i < 6; i++) {
+        rgb += hex.charAt(Math.round(Math.random()*15));
+    }
+    return "#" + rgb;
+}
