@@ -176,6 +176,13 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	    FILL = "";
 	}
 	
+	function CENTER_X() {
+	    return CANVAS_WIDTH/2;
+	}
+	
+	function CENTER_Y() {
+	    return CANVAS_HEIGHT/2;
+	}
 
 	//public methods 
 	this.RESET = RESET;
@@ -196,6 +203,8 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	this.SET_LINE = SET_LINE;
 	this.BEGIN_FILL = BEGIN_FILL;
 	this.END_FILL = END_FILL;
+	this.CENTER_X = CENTER_X;
+	this.CENTER_Y = CENTER_Y;
 
 	INIT(canvas, bgcolor, fgcolor);
 

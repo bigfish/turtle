@@ -177,3 +177,10 @@ function END_FILL() {
     FILL = "";
 }
 
+function CENTER_X() {
+    return CANVAS_WIDTH/2;
+}
+
+function CENTER_Y() {
+    return CANVAS_HEIGHT/2;
+}
