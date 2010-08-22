@@ -246,6 +246,28 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	    }
 	    timer(1);
 	}
+	
+	function DRAW_TURTLE(width, height, color) {
+	    var angle, hypotenuse;
+	    CTX.save();
+	    SET_LINE(color);
+	    //consider turtle as 2 RA triangles back to back
+	    PENUP();
+	    FORWARD(height);
+	    PENDOWN();
+	    angle = Math.atan2(height, width/2);
+	    angle = angle*180/Math.PI;//convert to degrees
+	    //console.log("angle = " + angle);
+	    hypotenuse = Math.sqrt(Math.pow(width/2, 2) + Math.pow(height,2));
+	    //console.log("hypotenuse = " + hypotenuse);
+	    RIGHT(90 + angle);
+	    FORWARD(hypotenuse);
+	    RIGHT(180-angle);
+	    FORWARD(width);
+	    RIGHT(180-angle);
+	    FORWARD(hypotenuse);
+	    CTX.restore();
+	}
 
 	//public methods 
 	this.RESET = RESET;
@@ -275,6 +297,7 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	this.SMELL = SMELL;
 	this.STOP_ANIM = STOP_ANIM;
 	this.ANIMATE = ANIMATE;
+	this.DRAW_TURTLE = DRAW_TURTLE;
 
 	INIT(canvas, bgcolor, fgcolor);
 
