@@ -1,6 +1,7 @@
 
 function Turtle(canvas, bgcolor, fgcolor, procedures) {
 
+	var ANIMATION;
 	var CTX;
 	var CANVAS_WIDTH;
 	var CANVAS_HEIGHT;
@@ -18,6 +19,10 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	var FORWARD_FAILED;
 	var FILL = "";
 	var MODE = "immediate";
+	var FOOD_X = 0;
+	var FOOD_Y = 0;
+	var DISTANCE_TO_FOOD;
+	var DISTANCE_LAST_TIME;
 
 	function RESET() {
 	    //reset transform matrix to default
@@ -28,7 +33,7 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	    CTX.fillStyle = DEFAULT_BG;
 	    CTX.strokeStyle = DEFAULT_FG;
 	    CTX.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-	
+	    STOP_ANIM();
 	    XCOR = CANVAS_WIDTH / 2;
 	    YCOR = CANVAS_HEIGHT / 2;
 	    ROTATION = 90;
@@ -183,6 +188,64 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	function CENTER_Y() {
 	    return CANVAS_HEIGHT/2;
 	}
+	
+	function GET_WIDTH() {
+	    return CANVAS_WIDTH;
+	}
+	
+	function GET_HEIGHT() {
+	    return CANVAS_HEIGHT;
+	}
+	
+	function SET_FOOD(x, y) {
+	    FOOD_X = x;
+	    FOOD_Y = y;
+	}
+	
+	function DIST(x1, y1, x2, y2) {
+	
+	    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+	}
+	
+	function SMELL() {
+	
+	    var result;
+	
+	    DISTANCE_TO_FOOD = DIST(FOOD_X, FOOD_Y, XCOR, YCOR);
+	
+	    if (DISTANCE_LAST_TIME === undefined){
+	        DISTANCE_LAST_TIME = DISTANCE_TO_FOOD;
+	    }
+	    
+	    if (DISTANCE_TO_FOOD > DISTANCE_LAST_TIME) {
+	        result = "weaker";
+	    } else {
+	        result = "stronger";
+	    }
+	
+	    DISTANCE_LAST_TIME = DISTANCE_TO_FOOD;
+	    return result;
+	}
+	
+	function STOP_ANIM() {
+	    if(ANIMATION){
+	        clearInterval(ANIMATION);
+	    }
+	}
+	function ANIMATE(fn, max) {
+	    function timer(time) {
+	        time = time || 1;
+	        fn.call();
+	        if( max && time < max){
+	            setTimeout(function () {
+	                timer(++time);
+	            }, 25);
+	        } else {
+	           ANIMATION = setInterval(fn, 25);
+	        }
+	    }
+	    timer(1);
+	}
 
 	//public methods 
 	this.RESET = RESET;
@@ -205,6 +268,13 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	this.END_FILL = END_FILL;
 	this.CENTER_X = CENTER_X;
 	this.CENTER_Y = CENTER_Y;
+	this.GET_WIDTH = GET_WIDTH;
+	this.GET_HEIGHT = GET_HEIGHT;
+	this.SET_FOOD = SET_FOOD;
+	this.DIST = DIST;
+	this.SMELL = SMELL;
+	this.STOP_ANIM = STOP_ANIM;
+	this.ANIMATE = ANIMATE;
 
 	INIT(canvas, bgcolor, fgcolor);
 

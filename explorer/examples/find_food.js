@@ -1,0 +1,4 @@
+SET_FOOD(RAND(0,GET_WIDTH()),
+                    RAND(0,GET_HEIGHT()));
+FIND_BY_SMELL2(20);
+

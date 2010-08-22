@@ -33,7 +33,7 @@ my $fname;
 my $sig;
 foreach $line(@lines) {
 	#wrap the function
-	if ($line =~ /^\s*function ([A-Za-z0-9_\$]+)([^{]*)/) {
+	if ($line =~ /^function ([A-Za-z0-9_\$]+)([^{]*)/) {
 		print $TAB.$line;
 		$fname = $1;
 		$sig = $2;
@@ -55,7 +55,7 @@ my $skipped_starting_comments = 0;
 foreach $line(@lines) {
 	#match a function statement and capture the name
 	if ($skipped_starting_comments) {
-		if ($line =~ /^\s*function ([A-Za-z0-9_\$]+)/) {
+		if ($line =~ /^function ([A-Za-z0-9_\$]+)/) {
 			push(@functions, $1);
 		}
 		print $TAB.$line;

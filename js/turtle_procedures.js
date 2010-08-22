@@ -85,6 +85,34 @@ var TURTLE_PROCEDURES = function (t) {
 		return t.CENTER_Y();
 	}
 
+	function GET_WIDTH() {
+		return t.GET_WIDTH();
+	}
+
+	function GET_HEIGHT() {
+		return t.GET_HEIGHT();
+	}
+
+	function SET_FOOD(x, y) {
+		return t.SET_FOOD(x, y);
+	}
+
+	function DIST(x1, y1, x2, y2) {
+		return t.DIST(x1, y1, x2, y2);
+	}
+
+	function SMELL() {
+		return t.SMELL();
+	}
+
+	function STOP_ANIM() {
+		return t.STOP_ANIM();
+	}
+
+	function ANIMATE(fn, max) {
+		return t.ANIMATE(fn, max);
+	}
+
    //end wrapper functions
 	
 	function SQUAREPIECE(size) {
@@ -298,59 +326,6 @@ var TURTLE_PROCEDURES = function (t) {
 	    return "#" + rgb;
 	}
 	
-	var FOOD_X = 0;
-	var FOOD_Y = 0;
-	
-	function SET_FOOD(x, y) {
-	    FOOD_X = x;
-	    FOOD_Y = y;
-	}
-	var DISTANCE_LAST_TIME;
-	
-	function DIST(x1, y1, x2, y2) {
-	
-	    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-	}
-	
-	function SMELL() {
-	
-	    var result;
-	    var DISTANCE_TO_FOOD = DIST(FOOD_X, FOOD_Y, XCOR, YCOR);
-	
-	    if (DISTANCE_LAST_TIME === undefined){
-	        DISTANCE_LAST_TIME = DISTANCE_TO_FOOD;
-	    }
-	    
-	    if (DISTANCE_TO_FOOD > DISTANCE_LAST_TIME) {
-	        result = "weaker";
-	    } else {
-	        result = "stronger";
-	    }
-	
-	    DISTANCE_LAST_TIME = DISTANCE_TO_FOOD;
-	    return result;
-	}
-	
-	var ANIMATION;
-	function STOP_ANIM() {
-	    if(ANIMATION){
-	        clearInterval(ANIMATION);
-	    }
-	}
-	function ANIMATE(fn, max) {
-	    function timer(time) {
-	        time = time || 1;
-	        fn.call();
-	        if( max && time < max){
-	            setTimeout(function () {
-	                timer(++time);
-	            }, 25);
-	        } else {
-	           ANIMATION = setInterval(fn, 25);
-	        }
-	    }
-	    timer(1);
-	}
 	
 	function FIND_BY_SMELL1() {
 	    ANIMATE(function () {
@@ -395,12 +370,6 @@ var TURTLE_PROCEDURES = function (t) {
 	t.RANDOM_MOVE = RANDOM_MOVE;
 	t.RANDOM_MOVE_IN_BOX = RANDOM_MOVE_IN_BOX;
 	t.RANDOM_COLOR = RANDOM_COLOR;
-	t.SET_FOOD = SET_FOOD;
-	t.DIST = DIST;
-	t.SMELL = SMELL;
-	t.STOP_ANIM = STOP_ANIM;
-	t.ANIMATE = ANIMATE;
-	t.timer = timer;
 	t.FIND_BY_SMELL1 = FIND_BY_SMELL1;
 	t.FIND_BY_SMELL2 = FIND_BY_SMELL2;
 
