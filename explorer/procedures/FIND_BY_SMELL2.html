@@ -1,0 +1,21 @@
+<html>
+	<head>
+	<style>
+      body, pre {
+        font-family: Verdana, Arial, Helvetica;
+        font-size: .85em;
+		background: #000000;
+		color: #00FF00;
+      }
+	  </style>
+	</head>
+	<body>
+	<pre>
+function FIND_BY_SMELL2(TURN) {
+    ANIMATE(function () {
+        FORWARD(1);
+        if(SMELL() == "weaker"){
+            RIGHT(TURN);
+        }
+    });
+}

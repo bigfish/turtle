@@ -48,8 +48,8 @@ close(FILE);
 my $started_function = 0;
 foreach $line(@lines) {
 	#match a function statement and capture the name
-	#start of function
-	if ($line =~ /^\s*function ([A-Za-z0-9_\$]+)/) {
+	#start of function -- must be at start of line
+	if ($line =~ /^function ([A-Za-z0-9_\$]+)/) {
 		if ($started_function) {
 			print SNIPPET_FILE $snippet_footer;
 			#close previous procedure file
