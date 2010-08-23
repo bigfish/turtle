@@ -3,15 +3,16 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 
 	var ANIMATION;
 	var CTX;
+	var CANVAS;
 	var CANVAS_WIDTH;
 	var CANVAS_HEIGHT;
 	var DEFAULT_BG;
 	var DEFAULT_FG;
 	var BG;
 	var FG;
-	var XCOR; 
-	var YCOR; 
-	var ROTATION; 
+	var XCOR;
+	var YCOR;
+	var ROTATION;
 	var PEN_DOWN;
 	var PI = Math.PI;
 	var DEG2RAD = PI / 180;
@@ -23,6 +24,8 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	var FOOD_Y = 0;
 	var DISTANCE_TO_FOOD;
 	var DISTANCE_LAST_TIME;
+	var OVERLAY;
+	var OVERLAY_CTX;
 
 	function RESET() {
 	    //reset transform matrix to default
@@ -46,16 +49,41 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	function INIT(canvas, bg, fg) {
 	
 	    if (typeof canvas === "string") {
-	        canvas = document.getElementById(canvas);
+	        CANVAS = document.getElementById(canvas);
 	    }
-	    if (canvas.getContext) {
-	        CTX = canvas.getContext("2d");
+	    if (CANVAS.getContext) {
+	        CTX = CANVAS.getContext("2d");
 	    } else {
 	        return;
 	    }
 	
-	    CANVAS_WIDTH = canvas.width;
-	    CANVAS_HEIGHT = canvas.height;
+	    CANVAS_WIDTH = CANVAS.width;
+	    CANVAS_HEIGHT = CANVAS.height;
+	    //find position of CANVAS element
+	    function findPos(obj) {
+	        var curleft = curtop = 0;
+	        if (obj.offsetParent) {
+	            do {
+	                curleft += obj.offsetLeft;
+	                curtop += obj.offsetTop;
+	            } while (obj = obj.offsetParent);
+	        }
+	        return [curleft, curtop];
+	    }
+	    var canvas_pos = findPos(CANVAS);
+	    //create overlay
+	    OVERLAY = CANVAS.cloneNode();
+	    OVERLAY.setAttribute("id", "overlay");
+	    OVERLAY.style.zIndex = "100";
+	    OVERLAY.style.position = "absolute";
+	    //TODO: get actual position of canvas
+	    OVERLAY.style.left = canvas_pos[0] + "px";
+	    OVERLAY.style.top = canvas_pos[1] + "px";
+	    CANVAS.parentNode.insertBefore(OVERLAY, CANVAS);
+	    OVERLAY_CTX = OVERLAY.getContext("2d");
+	    //test
+	    OVERLAY_CTX.fillStyle = "#FF0000";
+	    OVERLAY_CTX.fillRect(0, 0, 100, 100);
 	
 	    BG = DEFAULT_BG = bg || "#000000";
 	    FG = DEFAULT_FG = fg || "#00FF00";
@@ -65,9 +93,9 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	}
 	
 	function FORWARD(len) {
-	    if(MODE == "immediate") {
+	    if (MODE == "immediate") {
 	        CTX.beginPath();
-	        CTX.moveTo(0,0);
+	        CTX.moveTo(0, 0);
 	    }
 	    //forwards = up : reverse the Y coordinate
 	    if (PEN_DOWN) {
@@ -77,8 +105,8 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	            CTX.stroke();
 	        }
 	    } else {
-	        CTX.moveTo(0, -len);
-	        CTX.translate(0, -len);
+	        CTX.moveTo(0, - len);
+	        CTX.translate(0, - len);
 	    }
 	
 	    //update XCOR & YCOR 
@@ -112,7 +140,7 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	
 	function PENDOWN() {
 	    PEN_DOWN = true;
-	    if(MODE == "delayed") {
+	    if (MODE == "delayed") {
 	        CTX.beginPath();
 	        CTX.moveTo(0, 0);
 	    }
@@ -182,11 +210,11 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	}
 	
 	function CENTER_X() {
-	    return CANVAS_WIDTH/2;
+	    return CANVAS_WIDTH / 2;
 	}
 	
 	function CENTER_Y() {
-	    return CANVAS_HEIGHT/2;
+	    return CANVAS_HEIGHT / 2;
 	}
 	
 	function GET_WIDTH() {
@@ -213,10 +241,10 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	
 	    DISTANCE_TO_FOOD = DIST(FOOD_X, FOOD_Y, XCOR, YCOR);
 	
-	    if (DISTANCE_LAST_TIME === undefined){
+	    if (DISTANCE_LAST_TIME === undefined) {
 	        DISTANCE_LAST_TIME = DISTANCE_TO_FOOD;
 	    }
-	    
+	
 	    if (DISTANCE_TO_FOOD > DISTANCE_LAST_TIME) {
 	        result = "weaker";
 	    } else {
@@ -228,7 +256,7 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	}
 	
 	function STOP_ANIM() {
-	    if(ANIMATION){
+	    if (ANIMATION) {
 	        clearInterval(ANIMATION);
 	    }
 	}
@@ -236,18 +264,19 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	    function timer(time) {
 	        time = time || 1;
 	        fn.call();
-	        if( max && time < max){
+	        if (max && time < max) {
 	            setTimeout(function () {
 	                timer(++time);
-	            }, 25);
+	            },
+	            25);
 	        } else {
-	           ANIMATION = setInterval(fn, 25);
+	            ANIMATION = setInterval(fn, 25);
 	        }
 	    }
 	    timer(1);
 	}
 	
-	function DRAW_TURTLE(width, height, color) {
+	/*function DRAW_TURTLE(width, height, color) {
 	    var angle, hypotenuse;
 	    CTX.save();
 	    SET_LINE(color);
@@ -267,7 +296,8 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	    RIGHT(180-angle);
 	    FORWARD(hypotenuse);
 	    CTX.restore();
-	}
+	}*/
+	
 
 	//public methods 
 	this.RESET = RESET;
@@ -297,7 +327,6 @@ function Turtle(canvas, bgcolor, fgcolor, procedures) {
 	this.SMELL = SMELL;
 	this.STOP_ANIM = STOP_ANIM;
 	this.ANIMATE = ANIMATE;
-	this.DRAW_TURTLE = DRAW_TURTLE;
 
 	INIT(canvas, bgcolor, fgcolor);
 

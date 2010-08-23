@@ -113,10 +113,6 @@ var TURTLE_PROCEDURES = function (t) {
 		return t.ANIMATE(fn, max);
 	}
 
-	function DRAW_TURTLE(width, height, color) {
-		return t.DRAW_TURTLE(width, height, color);
-	}
-
    //end wrapper functions
 	
 	function SQUAREPIECE(size) {
