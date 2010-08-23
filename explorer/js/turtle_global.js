@@ -27,6 +27,11 @@ var DISTANCE_TO_FOOD;
 var DISTANCE_LAST_TIME;
 var OVERLAY;
 var OVERLAY_CTX;
+var TURTLE_IMG;
+var TURTLE_IMG_SRC = "images/turtle.png";
+var TURTLE_WIDTH;
+var TURTLE_HEIGHT;
+var TURTLE_LOADED = false;
 
 function RESET() {
     //reset transform matrix to default
@@ -86,11 +91,24 @@ function INIT(canvas, bg, fg) {
     OVERLAY_CTX.fillStyle = "#FF0000";
     OVERLAY_CTX.fillRect(0, 0, 100, 100);
 
+    LOAD_TURTLE(TURTLE_IMG_SRC);
+
     BG = DEFAULT_BG = bg || "#000000";
     FG = DEFAULT_FG = fg || "#00FF00";
 
     CTX.save();
     RESET();
+
+}
+
+function LOAD_TURTLE(src) {
+    TURTLE_IMG = new Image();
+    TURTLE_IMG.onload = function () {
+        TURTLE_WIDTH = TURTLE_IMG.width;
+        TURTLE_HEIGHT = TURTLE_IMG.height;
+        TURTLE_LOADED = true;
+    }
+    TURTLE_IMG.src = src;
 }
 
 function FORWARD(len) {
@@ -277,25 +295,9 @@ function ANIMATE(fn, max) {
     timer(1);
 }
 
-/*function DRAW_TURTLE(width, height, color) {
-    var angle, hypotenuse;
-    CTX.save();
-    SET_LINE(color);
-    //consider turtle as 2 RA triangles back to back
-    PENUP();
-    FORWARD(height);
-    PENDOWN();
-    angle = Math.atan2(height, width/2);
-    angle = angle*180/Math.PI;//convert to degrees
-    //console.log("angle = " + angle);
-    hypotenuse = Math.sqrt(Math.pow(width/2, 2) + Math.pow(height,2));
-    //console.log("hypotenuse = " + hypotenuse);
-    RIGHT(90 + angle);
-    FORWARD(hypotenuse);
-    RIGHT(180-angle);
-    FORWARD(width);
-    RIGHT(180-angle);
-    FORWARD(hypotenuse);
-    CTX.restore();
-}*/
+function DRAW_TURTLE() {
+    if (TURTLE_LOADED) {
+        CTX.drawImage(TURTLE_IMG, -TURTLE_WIDTH/2, -TURTLE_HEIGHT/2, TURTLE_WIDTH, TURTLE_HEIGHT);
+    }
+}
 

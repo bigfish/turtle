@@ -13,6 +13,10 @@ var TURTLE_PROCEDURES = function (t) {
 		return t.INIT(canvas, bg, fg);
 	}
 
+	function LOAD_TURTLE(src) {
+		return t.LOAD_TURTLE(src);
+	}
+
 	function FORWARD(len) {
 		return t.FORWARD(len);
 	}
@@ -111,6 +115,10 @@ var TURTLE_PROCEDURES = function (t) {
 
 	function ANIMATE(fn, max) {
 		return t.ANIMATE(fn, max);
+	}
+
+	function DRAW_TURTLE() {
+		return t.DRAW_TURTLE();
 	}
 
    //end wrapper functions
