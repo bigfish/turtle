@@ -33,23 +33,28 @@ var TURTLE_WIDTH;
 var TURTLE_HEIGHT;
 var TURTLE_LOADED = false;
 
-function RESET() {
+function RESET_CANVAS(ctx) {
     //reset transform matrix to default
-    CTX.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     //delete everything
-    CTX.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    //fill with background color
+    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+}
+
+function RESET() {
+    RESET_CANVAS(CTX);
     CTX.fillStyle = DEFAULT_BG;
     CTX.strokeStyle = DEFAULT_FG;
+    //fill with background color
     CTX.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     STOP_ANIM();
     XCOR = CANVAS_WIDTH / 2;
     YCOR = CANVAS_HEIGHT / 2;
-    ROTATION = 90;
+    ROTATION = 0;
     PEN_DOWN = true;
     MODE = "immediate";
     //move to center of canvas
     CTX.translate(XCOR, YCOR);
+    RESET_CANVAS(OVERLAY_CTX);
 }
 
 function INIT(canvas, bg, fg) {
@@ -82,14 +87,10 @@ function INIT(canvas, bg, fg) {
     OVERLAY.setAttribute("id", "overlay");
     OVERLAY.style.zIndex = "100";
     OVERLAY.style.position = "absolute";
-    //TODO: get actual position of canvas
     OVERLAY.style.left = canvas_pos[0] + "px";
     OVERLAY.style.top = canvas_pos[1] + "px";
     CANVAS.parentNode.insertBefore(OVERLAY, CANVAS);
     OVERLAY_CTX = OVERLAY.getContext("2d");
-    //test
-    OVERLAY_CTX.fillStyle = "#FF0000";
-    OVERLAY_CTX.fillRect(0, 0, 100, 100);
 
     LOAD_TURTLE(TURTLE_IMG_SRC);
 
@@ -107,6 +108,7 @@ function LOAD_TURTLE(src) {
         TURTLE_WIDTH = TURTLE_IMG.width;
         TURTLE_HEIGHT = TURTLE_IMG.height;
         TURTLE_LOADED = true;
+        DRAW_TURTLE();
     }
     TURTLE_IMG.src = src;
 }
@@ -129,8 +131,10 @@ function FORWARD(len) {
     }
 
     //update XCOR & YCOR 
-    XCOR += len * Math.cos(ROTATION * Math.PI / 180);
-    YCOR += len * Math.sin(ROTATION * Math.PI / 180);
+    XCOR += len * Math.cos(BEARING() * Math.PI / 180);
+    YCOR += len * Math.sin(BEARING() * Math.PI / 180);
+
+    DRAW_TURTLE();
 }
 
 function BACK(len) {
@@ -141,6 +145,7 @@ function RIGHT(angle) {
     ROTATION -= angle;
     ROTATION %= 360;
     CTX.rotate(angle * Math.PI / 180);
+    DRAW_TURTLE();
 }
 
 function LEFT(angle) {
@@ -296,8 +301,14 @@ function ANIMATE(fn, max) {
 }
 
 function DRAW_TURTLE() {
+    OVERLAY_CTX.save();
+    OVERLAY_CTX.clearRect(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
+    OVERLAY_CTX.setTransform(1, 0, 0, 1, 0, 0);
     if (TURTLE_LOADED) {
-        CTX.drawImage(TURTLE_IMG, -TURTLE_WIDTH/2, -TURTLE_HEIGHT/2, TURTLE_WIDTH, TURTLE_HEIGHT);
+        OVERLAY_CTX.translate(XCOR, CANVAS_HEIGHT - YCOR);
+        OVERLAY_CTX.rotate(-ROTATION *Math.PI/180);
+        OVERLAY_CTX.drawImage(TURTLE_IMG, -TURTLE_WIDTH/2, -TURTLE_HEIGHT/2, TURTLE_WIDTH, TURTLE_HEIGHT);
     }
+    OVERLAY_CTX.restore();
 }
 

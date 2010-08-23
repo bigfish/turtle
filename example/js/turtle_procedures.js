@@ -5,6 +5,10 @@ var TURTLE_PROCEDURES = function (t) {
         
     //wrap core turtle methods in functions
 
+	function RESET_CANVAS(ctx) {
+		return t.RESET_CANVAS(ctx);
+	}
+
 	function RESET() {
 		return t.RESET();
 	}
