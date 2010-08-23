@@ -10,9 +10,9 @@ var DEFAULT_BG;
 var DEFAULT_FG;
 var BG;
 var FG;
-var XCOR; 
-var YCOR; 
-var ROTATION; 
+var XCOR;
+var YCOR;
+var ROTATION;
 var PEN_DOWN;
 var PI = Math.PI;
 var DEG2RAD = PI / 180;
@@ -24,6 +24,11 @@ var FOOD_X = 0;
 var FOOD_Y = 0;
 var DISTANCE_TO_FOOD;
 var DISTANCE_LAST_TIME;
+var TURTLE_IMG;
+var TURTLE_IMG_SRC = "images/turtle.png";
+var TURTLE_WIDTH;
+var TURTLE_HEIGHT;
+var TURTLE_LOADED = false;
 
 function RESET() {
     //reset transform matrix to default
@@ -58,17 +63,30 @@ function INIT(canvas, bg, fg) {
     CANVAS_WIDTH = canvas.width;
     CANVAS_HEIGHT = canvas.height;
 
+    LOAD_TURTLE(TURTLE_IMG_SRC);
+
     BG = DEFAULT_BG = bg || "#000000";
     FG = DEFAULT_FG = fg || "#00FF00";
 
     CTX.save();
     RESET();
+
+}
+
+function LOAD_TURTLE(src) {
+    TURTLE_IMG = new Image();
+    TURTLE_IMG.onload = function () {
+        TURTLE_WIDTH = TURTLE_IMG.width;
+        TURTLE_HEIGHT = TURTLE_IMG.height;
+        TURTLE_LOADED = true;
+    }
+    TURTLE_IMG.src = src;
 }
 
 function FORWARD(len) {
-    if(MODE == "immediate") {
+    if (MODE == "immediate") {
         CTX.beginPath();
-        CTX.moveTo(0,0);
+        CTX.moveTo(0, 0);
     }
     //forwards = up : reverse the Y coordinate
     if (PEN_DOWN) {
@@ -78,8 +96,8 @@ function FORWARD(len) {
             CTX.stroke();
         }
     } else {
-        CTX.moveTo(0, -len);
-        CTX.translate(0, -len);
+        CTX.moveTo(0, - len);
+        CTX.translate(0, - len);
     }
 
     //update XCOR & YCOR 
@@ -113,7 +131,7 @@ function BEARING() {
 
 function PENDOWN() {
     PEN_DOWN = true;
-    if(MODE == "delayed") {
+    if (MODE == "delayed") {
         CTX.beginPath();
         CTX.moveTo(0, 0);
     }
@@ -183,11 +201,11 @@ function END_FILL() {
 }
 
 function CENTER_X() {
-    return CANVAS_WIDTH/2;
+    return CANVAS_WIDTH / 2;
 }
 
 function CENTER_Y() {
-    return CANVAS_HEIGHT/2;
+    return CANVAS_HEIGHT / 2;
 }
 
 function GET_WIDTH() {
@@ -214,10 +232,10 @@ function SMELL() {
 
     DISTANCE_TO_FOOD = DIST(FOOD_X, FOOD_Y, XCOR, YCOR);
 
-    if (DISTANCE_LAST_TIME === undefined){
+    if (DISTANCE_LAST_TIME === undefined) {
         DISTANCE_LAST_TIME = DISTANCE_TO_FOOD;
     }
-    
+
     if (DISTANCE_TO_FOOD > DISTANCE_LAST_TIME) {
         result = "weaker";
     } else {
@@ -229,7 +247,7 @@ function SMELL() {
 }
 
 function STOP_ANIM() {
-    if(ANIMATION){
+    if (ANIMATION) {
         clearInterval(ANIMATION);
     }
 }
@@ -237,17 +255,24 @@ function ANIMATE(fn, max) {
     function timer(time) {
         time = time || 1;
         fn.call();
-        if( max && time < max){
+        if (max && time < max) {
             setTimeout(function () {
                 timer(++time);
-            }, 25);
+            },
+            25);
         } else {
-           ANIMATION = setInterval(fn, 25);
+            ANIMATION = setInterval(fn, 25);
         }
     }
     timer(1);
 }
 
+function DRAW_TURTLE() {
+    if (TURTLE_LOADED) {
+        CTX.drawImage(TURTLE_IMG, -TURTLE_WIDTH/2, -TURTLE_HEIGHT/2, TURTLE_WIDTH, TURTLE_HEIGHT);
+    }
+}
+/*
 function DRAW_TURTLE(width, height, color) {
     var angle, hypotenuse;
     CTX.save();
@@ -268,4 +293,5 @@ function DRAW_TURTLE(width, height, color) {
     RIGHT(180-angle);
     FORWARD(hypotenuse);
     CTX.restore();
-}
+}*/
+
