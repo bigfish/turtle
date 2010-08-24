@@ -89,7 +89,7 @@ function INIT(canvas, bg, fg) {
     //find position of CANVAS element
     var canvas_pos = GET_CANVAS_POS();
     //create overlay
-    OVERLAY = CANVAS.cloneNode();
+    OVERLAY = CANVAS.cloneNode(false);
     OVERLAY.setAttribute("id", "overlay");
     OVERLAY.style.zIndex = "100";
     OVERLAY.style.position = "absolute";

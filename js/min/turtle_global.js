@@ -4,7 +4,7 @@ function GET_CANVAS_POS(){var obj=CANVAS;var curleft=0,curtop=0;if(obj.offsetPar
 return[curleft,curtop];}
 function INIT(canvas,bg,fg){if(typeof canvas==="string"){CANVAS=document.getElementById(canvas);}
 if(CANVAS.getContext){CTX=CANVAS.getContext("2d");}else{return;}
-CANVAS_WIDTH=CANVAS.width;CANVAS_HEIGHT=CANVAS.height;var canvas_pos=GET_CANVAS_POS();OVERLAY=CANVAS.cloneNode();OVERLAY.setAttribute("id","overlay");OVERLAY.style.zIndex="100";OVERLAY.style.position="absolute";OVERLAY.style.left=canvas_pos[0]+"px";OVERLAY.style.top=canvas_pos[1]+"px";CANVAS.parentNode.insertBefore(OVERLAY,CANVAS);OVERLAY_CTX=OVERLAY.getContext("2d");LOAD_TURTLE(TURTLE_IMG_SRC);BG=DEFAULT_BG=bg||"#000000";FG=DEFAULT_FG=fg||"#00FF00";CTX.save();RESET();}
+CANVAS_WIDTH=CANVAS.width;CANVAS_HEIGHT=CANVAS.height;var canvas_pos=GET_CANVAS_POS();OVERLAY=CANVAS.cloneNode(false);OVERLAY.setAttribute("id","overlay");OVERLAY.style.zIndex="100";OVERLAY.style.position="absolute";OVERLAY.style.left=canvas_pos[0]+"px";OVERLAY.style.top=canvas_pos[1]+"px";CANVAS.parentNode.insertBefore(OVERLAY,CANVAS);OVERLAY_CTX=OVERLAY.getContext("2d");LOAD_TURTLE(TURTLE_IMG_SRC);BG=DEFAULT_BG=bg||"#000000";FG=DEFAULT_FG=fg||"#00FF00";CTX.save();RESET();}
 function LOAD_TURTLE(src){TURTLE_IMG=new Image();TURTLE_IMG.onload=function(){TURTLE_WIDTH=TURTLE_IMG.width;TURTLE_HEIGHT=TURTLE_IMG.height;TURTLE_LOADED=true;DRAW_TURTLE();};TURTLE_IMG.src=src;}
 function FORWARD(len){if(MODE=="immediate"){CTX.beginPath();CTX.moveTo(0,0);}
 if(PEN_DOWN){CTX.lineTo(0,-len);CTX.translate(0,-len);if(MODE=="immediate"){CTX.stroke();}}else{CTX.moveTo(0,-len);CTX.translate(0,-len);}
