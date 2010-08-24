@@ -7,7 +7,7 @@ my $function_name = "";
 #first argument should be path to global_procedures.js
 my $file = shift;
 #2nd arg should be dir where generated procedures go
-my $procedures_dir = shift
+my $procedures_dir = shift;
 $header = <<END;
 <html>
 	<head>

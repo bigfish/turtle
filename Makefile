@@ -7,15 +7,18 @@ JSDIR=js
 EXPLORER=explorer
 EXAMPLE=example
 
-.all:	js/turtle.js js/min/turtle.js $(EXPLORER)/js/turtle_global.js $(EXAMPLE)/js/turtle.js:
+
+all:	turtle min example explorer
+
+.PHONY: all turtle min example explorer
 
 #generate OOP turtle from global version
-js/turtle.js:	(JSDIR)/global_procedures.js
+turtle:	$(JSDIR)/global_procedures.js
 	@./gen_turtle_procedures.pl $(JSDIR)/turtle_global.js $(JSDIR)/global_procedures.js > $(JSDIR)/turtle_procedures.js
 	@./gen_turtle.pl $(JSDIR)/turtle_global.js > js/turtle.js
 
 #generate minified version of js files
-js/min/turtle.js:	$(JSDIR)/global_procedures.js $(JSDIR)/turtle_global.js
+min:	$(JSDIR)/global_procedures.js $(JSDIR)/turtle_global.js
 	@rm -rf js/min
 	@mkdir js/min
 	@jsmin.pl js/turtle_global.js js/min/turtle_global.js
@@ -24,12 +27,12 @@ js/min/turtle.js:	$(JSDIR)/global_procedures.js $(JSDIR)/turtle_global.js
 	@jsmin.pl js/turtle_procedures.js js/min/turtle_procedures.js
 
 #generate example
-$(EXAMPLE)/js/turtle.js:	$(JSDIR)/turtle.js
+example:	$(JSDIR)/turtle.js
 	@rm -rf $(EXAMPLE)/js
 	@cp -R $(JSDIR) $(EXAMPLE)/
 
 #generate explorer js files
-$(EXPLORER)/js/turtle_global.js:	$(JSDIR)/turtle.js
+explorer: $(JSDIR)/turtle.js
 	@rm -rf $(EXPLORER)/js
 	@mkdir $(EXPLORER)/js
 	@cp $(JSDIR)/turtle_global.js $(EXPLORER)/js/
