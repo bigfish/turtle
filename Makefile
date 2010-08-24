@@ -6,11 +6,11 @@
 JSDIR=js
 EXPLORER=explorer
 EXAMPLE=example
+TURTLE_SHELL=shell
 
+all:	turtle min example explorer turtle_shell
 
-all:	turtle min example explorer
-
-.PHONY: all turtle min example explorer
+.PHONY: all turtle min example explorer turtle_shell
 
 #generate OOP turtle from global version
 turtle:	$(JSDIR)/global_procedures.js
@@ -33,8 +33,6 @@ example:	$(JSDIR)/turtle.js
 
 #generate explorer js files
 explorer: $(JSDIR)/turtle.js
-	@rm -rf $(EXPLORER)/js
-	@mkdir $(EXPLORER)/js
 	@cp $(JSDIR)/turtle_global.js $(EXPLORER)/js/
 	@cp $(JSDIR)/global_procedures.js $(EXPLORER)/js/
 	@cp -R $(JSDIR)/min $(EXPLORER)/js/
@@ -42,6 +40,12 @@ explorer: $(JSDIR)/turtle.js
 	@mkdir $(EXPLORER)/procedures
 	@rm $(EXPLORER)/procedures.html
 	@./gen_procedures.pl $(JSDIR)/global_procedures.js $(EXPLORER)/procedures > $(EXPLORER)/procedures.html
+	@cp -R images/* $(EXPLORER)/images/
 
+#generate a stripped down version (no procedures html files)
+turtle_shell: $(JSDIR)/turtle.js
+	@cp $(JSDIR)/min/turtle_global.js $(TURTLE_SHELL)/js/
+	@cp $(JSDIR)/min/global_procedures.js $(TURTLE_SHELL)/js/
+	@cp -R images/* $(TURTLE_SHELL)/images/
 
 

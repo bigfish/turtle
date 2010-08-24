@@ -13,6 +13,10 @@ var TURTLE_PROCEDURES = function (t) {
 		return t.RESET();
 	}
 
+	function GET_CANVAS_POS() {
+		return t.GET_CANVAS_POS();
+	}
+
 	function INIT(canvas, bg, fg) {
 		return t.INIT(canvas, bg, fg);
 	}
@@ -121,8 +125,20 @@ var TURTLE_PROCEDURES = function (t) {
 		return t.ANIMATE(fn, max);
 	}
 
+	function RESET_OVERLAY() {
+		return t.RESET_OVERLAY();
+	}
+
 	function DRAW_TURTLE() {
 		return t.DRAW_TURTLE();
+	}
+
+	function HIDE_TURTLE() {
+		return t.HIDE_TURTLE();
+	}
+
+	function SHOW_TURTLE() {
+		return t.SHOW_TURTLE();
 	}
 
    //end wrapper functions

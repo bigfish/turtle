@@ -32,6 +32,7 @@ var TURTLE_IMG_SRC = "images/turtle.png";
 var TURTLE_WIDTH;
 var TURTLE_HEIGHT;
 var TURTLE_LOADED = false;
+var TURTLE_VISIBLE = true;
 
 function RESET_CANVAS(ctx) {
     //reset transform matrix to default
@@ -52,9 +53,24 @@ function RESET() {
     ROTATION = 0;
     PEN_DOWN = true;
     MODE = "immediate";
+    TURTLE_VISIBLE = true;
     //move to center of canvas
     CTX.translate(XCOR, YCOR);
     RESET_CANVAS(OVERLAY_CTX);
+    DRAW_TURTLE();
+}
+
+function GET_CANVAS_POS() {
+    var obj = CANVAS;
+    var curleft = 0,
+    curtop = 0;
+    if (obj.offsetParent) {
+        do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+    }
+    return [curleft, curtop];
 }
 
 function INIT(canvas, bg, fg) {
@@ -71,17 +87,7 @@ function INIT(canvas, bg, fg) {
     CANVAS_WIDTH = CANVAS.width;
     CANVAS_HEIGHT = CANVAS.height;
     //find position of CANVAS element
-    function findPos(obj) {
-        var curleft = curtop = 0;
-        if (obj.offsetParent) {
-            do {
-                curleft += obj.offsetLeft;
-                curtop += obj.offsetTop;
-            } while (obj = obj.offsetParent);
-        }
-        return [curleft, curtop];
-    }
-    var canvas_pos = findPos(CANVAS);
+    var canvas_pos = GET_CANVAS_POS();
     //create overlay
     OVERLAY = CANVAS.cloneNode();
     OVERLAY.setAttribute("id", "overlay");
@@ -109,7 +115,7 @@ function LOAD_TURTLE(src) {
         TURTLE_HEIGHT = TURTLE_IMG.height;
         TURTLE_LOADED = true;
         DRAW_TURTLE();
-    }
+    };
     TURTLE_IMG.src = src;
 }
 
@@ -133,8 +139,9 @@ function FORWARD(len) {
     //update XCOR & YCOR 
     XCOR += len * Math.cos(BEARING() * Math.PI / 180);
     YCOR += len * Math.sin(BEARING() * Math.PI / 180);
-
-    DRAW_TURTLE();
+    if (TURTLE_VISIBLE) {
+        DRAW_TURTLE();
+    }
 }
 
 function BACK(len) {
@@ -145,7 +152,9 @@ function RIGHT(angle) {
     ROTATION -= angle;
     ROTATION %= 360;
     CTX.rotate(angle * Math.PI / 180);
-    DRAW_TURTLE();
+    if(TURTLE_VISIBLE){
+        DRAW_TURTLE();
+    }
 }
 
 function LEFT(angle) {
@@ -299,16 +308,28 @@ function ANIMATE(fn, max) {
     }
     timer(1);
 }
-
-function DRAW_TURTLE() {
+function RESET_OVERLAY() {
     OVERLAY_CTX.save();
-    OVERLAY_CTX.clearRect(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
+    OVERLAY_CTX.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     OVERLAY_CTX.setTransform(1, 0, 0, 1, 0, 0);
+}
+function DRAW_TURTLE() {
+    RESET_OVERLAY();
     if (TURTLE_LOADED) {
         OVERLAY_CTX.translate(XCOR, CANVAS_HEIGHT - YCOR);
-        OVERLAY_CTX.rotate(-ROTATION *Math.PI/180);
-        OVERLAY_CTX.drawImage(TURTLE_IMG, -TURTLE_WIDTH/2, -TURTLE_HEIGHT/2, TURTLE_WIDTH, TURTLE_HEIGHT);
+        OVERLAY_CTX.rotate( - ROTATION * Math.PI / 180);
+        OVERLAY_CTX.drawImage(TURTLE_IMG, - TURTLE_WIDTH / 2, - TURTLE_HEIGHT / 2, TURTLE_WIDTH, TURTLE_HEIGHT);
     }
     OVERLAY_CTX.restore();
+}
+
+function HIDE_TURTLE() {
+    RESET_OVERLAY();
+    TURTLE_VISIBLE = false;
+}
+
+function SHOW_TURTLE() {
+    TURTLE_VISIBLE = true;
+    DRAW_TURTLE();
 }
 
