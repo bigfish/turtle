@@ -21,10 +21,10 @@ turtle:	$(JSDIR)/global_procedures.js
 min:	$(JSDIR)/global_procedures.js $(JSDIR)/turtle_global.js
 	@rm -rf js/min
 	@mkdir js/min
-	@jsmin.pl js/turtle_global.js js/min/turtle_global.js
-	@jsmin.pl js/global_procedures.js js/min/global_procedures.js
-	@jsmin.pl js/turtle.js js/min/turtle.js
-	@jsmin.pl js/turtle_procedures.js js/min/turtle_procedures.js
+	@yuic js/turtle_global.js js/min/turtle_global.js
+	@yuic js/global_procedures.js js/min/global_procedures.js
+	@yuic js/turtle.js js/min/turtle.js
+	@yuic js/turtle_procedures.js js/min/turtle_procedures.js
 
 #generate example
 example:	$(JSDIR)/turtle.js
@@ -40,12 +40,12 @@ explorer: $(JSDIR)/turtle.js
 	@mkdir $(EXPLORER)/procedures
 	@rm $(EXPLORER)/procedures.html
 	@./gen_procedures.pl $(JSDIR)/global_procedures.js $(EXPLORER)/procedures > $(EXPLORER)/procedures.html
-	@cp -R images/* $(EXPLORER)/images/
+	@cp -R images/turtle.png $(EXPLORER)/images/
 
 #generate a stripped down version (no procedures html files)
 turtle_shell: $(JSDIR)/turtle.js
 	@cp $(JSDIR)/min/turtle_global.js $(TURTLE_SHELL)/js/
 	@cp $(JSDIR)/min/global_procedures.js $(TURTLE_SHELL)/js/
-	@cp -R images/* $(TURTLE_SHELL)/images/
+	@cp -R images/turtle.png $(TURTLE_SHELL)/images/
 
 
