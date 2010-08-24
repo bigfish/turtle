@@ -1,12 +1,13 @@
 #!/usr/bin/perl
 #generate procedure files for turtle explorer using global_procedures
 my @functions = ();
-my $procedures_dir = "procedures";
 my $procedure_file = "";
 my $procedure = "";
 my $function_name = "";
 #first argument should be path to global_procedures.js
 my $file = shift;
+#2nd arg should be dir where generated procedures go
+my $procedures_dir = shift
 $header = <<END;
 <html>
 	<head>
